@@ -2,10 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Bebas_Neue } from "next/font/google";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { cn } from "@/lib/utils";
+
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import AnalyticsWrapper from "@/components/analytics/AnalyticsWrapper";
+import Header from "@/components/basics/Header";
 
 // Optimized font loading with variable fonts
 const inter = Inter({
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
   ),
   title: {
     template: "%s | MyDearNikes",
-    default: "T-shirts and Tops | Shop Online - MyDearNikes",
+    default: "MyDearNikes - T-shirts and Tops | Shop Online",
   },
   description:
     "MyDearNikes offers unique Tees with bold, statements designs. Shop now for premium, limited-edition Tees and look Cool",
@@ -215,16 +216,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="color-scheme" content="light dark" />
       </head>
 
-      <body
-        className={`min-h-screen bg-background  text-foreground selection:bg-primary/20 ${inter.variable} ${bebasNeue.variable}`}
-      >
+      <body className={`  ${inter.variable} ${bebasNeue.variable}`}>
         {/* Skip navigation for accessibility */}
-        <a
+        {/* <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
         >
           Skip to main content
-        </a>
+        </a> */}
 
         {/* Theme provider for dark/light mode */}
         {/* TODO: Add ThemeProvider component if dark/light mode is needed */}
@@ -232,6 +231,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* Main application structure */}
         <div className="relative flex min-h-screen flex-col">
           {/* Header/Navigation would go here */}
+          <Header />
 
           {/* Main content area */}
           <main id="main-content" className="flex-1">
