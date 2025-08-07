@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Bebas_Neue } from "next/font/google";
+import { Inter, Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -22,6 +22,21 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
   display: "swap",
   variable: "--font-bebas-neue",
+  preload: true,
+});
+
+const geist = Geist({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-geist",
+  weight: ["300", "400", "500", "600", "700"],
+  preload: true,
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-geist-mono",
+  weight: ["300", "400", "500", "600", "700"],
   preload: true,
 });
 
@@ -216,7 +231,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="color-scheme" content="light dark" />
       </head>
 
-      <body className={`  ${inter.variable} ${bebasNeue.variable}`}>
+      <body className={`  ${inter.variable} ${bebasNeue.variable} ${geist.variable} ${geistMono.variable}`}>
         {/* Skip navigation for accessibility */}
         {/* <a
           href="#main-content"

@@ -123,17 +123,22 @@
 
 
 /* globals.css */
-.font-inter {
-  font-family: var(--font-inter);
-}
+
 
 .font-bebas {
   font-family: var(--font-bebas-neue);
 }
 
+.font-geist { 
+  font-family: var(--font-geist) ;
+}
+.font-mono { 
+  font-family: var(--font-geist-mono) ;
+}
+
 /* Or set defaults */
 body {
-  font-family: var(--font-inter);
+  font-family: var(--font-geist);
 }
 
 h1,
