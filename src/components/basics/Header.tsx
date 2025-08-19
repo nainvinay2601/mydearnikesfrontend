@@ -32,7 +32,7 @@ const Header = () => {
               Shop
             </li>
             <li>
-              Shop
+              Shops
             </li>
             <li>
               Shop
