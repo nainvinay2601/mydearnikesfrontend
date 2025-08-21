@@ -121,24 +121,28 @@
   }
 }
 
-
 /* globals.css */
-
 
 .font-bebas {
   font-family: var(--font-bebas-neue);
 }
 
-.font-geist { 
-  font-family: var(--font-geist) ;
+
+.font-mono {
+  font-family: var(--font-geist-mono);
 }
-.font-mono { 
-  font-family: var(--font-geist-mono) ;
+
+.font-inter{ 
+  font-family: var(--font-inter);
+}
+
+.font-ispire {
+  font-family: var(--font-ispire);
 }
 
 /* Or set defaults */
 body {
-  font-family: var(--font-geist);
+  font-family: var(--font-inter);
 }
 
 h1,

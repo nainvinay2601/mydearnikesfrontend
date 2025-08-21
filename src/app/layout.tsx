@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
-
+import localfont from "next/font/local"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Toaster } from "@/components/ui/sonner";
@@ -17,6 +17,19 @@ const inter = Inter({
   preload: true,
 });
 
+
+const ispire = localfont(
+  {
+    src:[
+      {
+        path:"../../public/fonts/OPTISpire.woff2",
+        weight:"400",
+      }
+    ], 
+    variable:"--font-ispire"
+  }
+)
+
 const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
   weight: "400",
@@ -25,13 +38,7 @@ const bebasNeue = Bebas_Neue({
   preload: true,
 });
 
-const geist = Geist({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  variable: "--font-geist",
-  weight: ["300", "400", "500", "600", "700"],
-  preload: true,
-});
+
 const geistMono = Geist_Mono({
   subsets: ["latin", "latin-ext"],
   display: "swap",
@@ -231,7 +238,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="color-scheme" content="light dark" />
       </head>
 
-      <body className={`  ${inter.variable} ${bebasNeue.variable} ${geist.variable} ${geistMono.variable}`}>
+      <body className={`  ${inter.variable} ${bebasNeue.variable}  ${geistMono.variable} ${ispire.variable}`}>
         {/* Skip navigation for accessibility */}
         {/* <a
           href="#main-content"
