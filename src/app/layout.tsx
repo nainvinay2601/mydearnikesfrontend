@@ -1,5 +1,6 @@
+
 import type { Metadata, Viewport } from "next";
-import { Inter, Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
+import { Inter, Bebas_Neue } from "next/font/google";
 import localfont from "next/font/local"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -39,13 +40,6 @@ const bebasNeue = Bebas_Neue({
 });
 
 
-const geistMono = Geist_Mono({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  variable: "--font-geist-mono",
-  weight: ["300", "400", "500", "600", "700"],
-  preload: true,
-});
 
 // Separate viewport export (Next.js 14+ requirement)
 export const viewport: Viewport = {
@@ -165,20 +159,10 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/greenapplejuice.ico", sizes: "any" },
+      
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        rel: "mask-icon",
-        url: "/safari-pinned-tab.svg",
-        color: "#000000",
-      },
-    ],
+   
   },
 };
 
@@ -238,7 +222,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="color-scheme" content="light dark" />
       </head>
 
-      <body className={`  ${inter.variable} ${bebasNeue.variable}  ${geistMono.variable} ${ispire.variable}`}>
+      <body className={`  ${inter.variable} ${bebasNeue.variable}   ${ispire.variable}`}>
         {/* Skip navigation for accessibility */}
         {/* <a
           href="#main-content"
