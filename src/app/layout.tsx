@@ -204,7 +204,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* Preload critical CSS/JS if needed */}
         <link
           rel="preload"
-          href="/fonts/MyDearNikes-Brand.woff2"
+          href="/fonts/OPTISpire.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

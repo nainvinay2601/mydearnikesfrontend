@@ -2,9 +2,13 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 
+import SearchComponent from "../Navbar/SearchComponent/SearchComp";
+
 const Header = () => {
   // 1️⃣  single state: null (closed) or section name
-  const [active, setActive] = useState<null | "tees" | "bottoms" | "accessories" | "newin" | "search">(null);
+  const [active, setActive] = useState<
+    null | "tees" | "bottoms" | "accessories" | "newin" | "search"
+  >(null);
 
   // 2️⃣  open/close menu, default to Tees
   const toggle = () => setActive((prev) => (prev ? null : "tees"));
@@ -61,45 +65,58 @@ const Header = () => {
               <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
                 All Tees
               </a>
-              <a className="text-xl font-semibold tracking-tight">Oversized Tees</a>
-              <a className="text-xl font-semibold tracking-tight">Fitted Tees</a>
+              <a className="text-xl font-semibold tracking-tight">
+                Oversized Tees
+              </a>
+              <a className="text-xl font-semibold tracking-tight">
+                Fitted Tees
+              </a>
               <a className="text-xl font-semibold tracking-tight">Baby Tees</a>
               <a className="text-xl font-semibold tracking-tight">Blanks</a>
             </nav>
           )}
 
-          {active === "newin" && <div className="px-[8px] py-2">
-            <nav className="flex flex-col px-[8px] py-3 gap-2 border-b-[0.5px] border-[#aeadad]">
-              <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
-                Crop Tops
-              </a>
-              <a className="text-xl font-semibold tracking-tight">MDN Pants</a>
-              <a className="text-xl font-semibold tracking-tight">Rockstar Energy Drink</a>
-            
-            </nav>
-            </div>}
-          {active === "bottoms" && <div className="px-[8px] py-3">
+          {active === "newin" && (
+            <div className="px-[8px] py-2">
               <nav className="flex flex-col px-[8px] py-3 gap-2 border-b-[0.5px] border-[#aeadad]">
-              <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
-                All Bottoms
-              </a>
-              <a className="text-xl font-semibold tracking-tight">Shorts</a>
-              <a className="text-xl font-semibold tracking-tight">Pants</a>
-            
-            </nav>
-            </div>}
-          {active === "accessories" && <div className="px-[8px] py-3">
+                <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
+                  Crop Tops
+                </a>
+                <a className="text-xl font-semibold tracking-tight">
+                  MDN Pants
+                </a>
+                <a className="text-xl font-semibold tracking-tight">
+                  Rockstar Energy Drink
+                </a>
+              </nav>
+            </div>
+          )}
+          {active === "bottoms" && (
+            <div className="px-[8px] py-3">
               <nav className="flex flex-col px-[8px] py-3 gap-2 border-b-[0.5px] border-[#aeadad]">
-              <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
-                All Accessories
-              </a>
-              <a className="text-xl font-semibold tracking-tight">Tumbler</a>
-              <a className="text-xl font-semibold tracking-tight">Caps</a>
-              <a className="text-xl font-semibold tracking-tight">Tote Bags</a>
-            
-            </nav>
-            </div>}
-          {active === "search" && <div className="px-[8px] py-3">Hello Search</div>}
+                <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
+                  All Bottoms
+                </a>
+                <a className="text-xl font-semibold tracking-tight">Shorts</a>
+                <a className="text-xl font-semibold tracking-tight">Pants</a>
+              </nav>
+            </div>
+          )}
+          {active === "accessories" && (
+            <div className="px-[8px] py-3">
+              <nav className="flex flex-col px-[8px] py-3 gap-2 border-b-[0.5px] border-[#aeadad]">
+                <a className="text-xl font-semibold tracking-tight underline underline-offset-4">
+                  All Accessories
+                </a>
+                <a className="text-xl font-semibold tracking-tight">Tumbler</a>
+                <a className="text-xl font-semibold tracking-tight">Caps</a>
+                <a className="text-xl font-semibold tracking-tight">
+                  Tote Bags
+                </a>
+              </nav>
+            </div>
+          )}
+          {active === "search" && <SearchComponent />}
 
           {/* Help Bar */}
           <nav className="flex items-center overflow-x-auto gap-2 scrollbar-hide px-[8px] py-[16px] border-b-[0.5px] border-[#aeadad] rounded-b-3xl">

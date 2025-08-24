@@ -165,3 +165,10 @@ h6 {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+.bottomBorder { 
+  border-bottom-width: 0.5px;
+  border-color: #aeadad;
+  border-style: solid;
+  
+}
