@@ -1,3 +1,4 @@
+import ExploreMDN from "@/components/Homepage/ExploreMDN/ExploreMDN";
 import HeroSection from "@/components/Homepage/HeroSection/HeroSection";
 import LatestDropHero from "@/components/Homepage/latestDropHero/LatestDropHero";
 import ShopByCategory from "@/components/Homepage/ShopByCategories/ShopByCategory";
@@ -9,7 +10,7 @@ export default function Home() {
         <HeroSection />
         <LatestDropHero />
         <ShopByCategory/>
-        <LatestDropHero />
+        <ExploreMDN/>
 
       </h1>
     </div>

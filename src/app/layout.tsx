@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import AnalyticsWrapper from "@/components/analytics/AnalyticsWrapper";
 import Header from "@/components/basics/Header";
+import Footer from "@/components/basics/Footer";
 
 // Optimized font loading with variable fonts
 const inter = Inter({
@@ -245,6 +246,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </main>
 
           {/* Footer would go here */}
+          <Footer/>
         </div>
 
         {/* Global UI components */}
