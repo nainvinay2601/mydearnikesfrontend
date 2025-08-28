@@ -4,8 +4,8 @@ import React from "react";
 const HeroSection = () => {
   return (
     <>
-      <div className="bg-[url('/images/heroImg.png')] pt-16 bg-cover bg-center h-[90vh] lg:hidden flex justify-center items-center  ">
-        <div className="buttonBox flex flex-col h-[70vh]  justify-between items-center ">
+      <div className="bg-[url('/images/heroImg.png')] pt-16 bg-cover bg-center h-[95vh] lg:hidden flex justify-center items-center  ">
+        <div className="buttonBox flex flex-col h-[80vh]  justify-between items-center ">
           <div className="subText text-white border-[#ffffff] uppercase font-normal text-sm border-[0.5px] inline-block px-2 py-1 rounded-full ">
             Graphics for the chronically online{" "}
           </div>

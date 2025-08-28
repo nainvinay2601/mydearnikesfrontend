@@ -173,14 +173,7 @@ const ExploreMDN = () => {
             className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col "
           >
             <div className="flex-1 bg-gray-100 flex justify-center items-center p-2">
-              {/* <Image
-                src={product.image}
-                alt={product.alt}
-                width={400}
-                height={480}
-                className=" "
-                priority={product.id <= 4} // Only prioritize first 4 images
-              /> */}
+              
               <Image
                 src={product.image}
                 alt={product.alt}
