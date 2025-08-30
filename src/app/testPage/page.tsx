@@ -1,5 +1,3 @@
-
-
 "use client";
 import React, { useState } from "react";
 import { Swiper, SwiperSlide,  } from "swiper/react";
@@ -12,8 +10,6 @@ import "swiper/css/pagination";
 const images = [
   { src: "/images/pcrace.webp", alt: "Pic1" },
   { src: "/images/blood.webp", alt: "pic2" },
-  { src: "/images/mdn.webp", alt: "pic2" },
-  { src: "/images/babyTee.webp", alt: "pic2" },
 ];
 
 // Custom Bullet
@@ -38,15 +34,15 @@ const CustomBullet = ({
   );
 };
 
-export default function ImageCarousel() {
+export default function SwiperTest() {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
-    <div className=" relative mb-2 ">
+    <div className="pt-16 relative ">
       <Swiper
         // pagination={{ type: "bullets" }}
         modules={[Autoplay]}
         autoplay={{
-          delay: 4000,
+          delay: 2000,
           disableOnInteraction: false, // Continues after user interaction
         }}
         // loop={true}
@@ -72,7 +68,3 @@ export default function ImageCarousel() {
     </div>
   );
 }
-
-
-
-

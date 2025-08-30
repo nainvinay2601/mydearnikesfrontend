@@ -13,8 +13,8 @@ export default function ProductQuantity() {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
   return (
-    <div className="flex justify-between items-center  px-[8px] pt-8 gap-3 ">
-      <div className="rounded-none  w-[30%]    border-[0.25px] border-[#aeadad]  text-sm px-4 py-2   flex justify-between items-center  ">
+    <div className="flex justify-between items-center  px-[8px] pt-6 gap-3 ">
+      <div className="rounded-none  w-[25%]    border-[0.25px] border-[#aeadad]  text-sm px-2 py-2   flex justify-between items-center  ">
         <button onClick={decrement}>
           <Minus size={12} />
         </button>
@@ -23,7 +23,7 @@ export default function ProductQuantity() {
           <Plus size={12} />
         </button>
       </div>
-      <div className="addToCart w-[70%]">
+      <div className="addToCart w-[75%]">
         <Button className="w-full rounded-none py-2  border-[0.25px] border-[#aeadad]" variant={"outline"}>
             Add To Bag
         </Button>

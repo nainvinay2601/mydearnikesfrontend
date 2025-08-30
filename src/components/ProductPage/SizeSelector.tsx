@@ -6,12 +6,12 @@ import { RulerDimensionLine } from "lucide-react";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 const SizeSelector = () => {
-  const [selectedSize, setSelectedSize] = useState<string | null>('S');
+  const [selectedSize, setSelectedSize] = useState<string>('S');
   const handleSizeClick = (size: string) => {
     setSelectedSize(size);
   };
   return (
-    <div className="flex  items-center mt-7 px-[8px] w-full justify-between  ">
+    <div className="flex  items-center mt-5 px-[8px] w-full justify-between  ">
       <div className="container flex  items-center gap-3">
         <div className="heading text-[12px] font-regular">Size</div>
         <div className="sizeContainer ">
