@@ -1,91 +1,100 @@
-"use client";
 import { X } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
-// Types 
-type Product= { 
-  id:number; 
-    name:string; 
-    price:string; 
-    category:string;
-    size:string[];
-    color:string;
+//Type Definition -> keeps var -> assign type to each
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  size: string[];
+  color: string;
 }
 
-  type FilterType = 'category' | 'size' | 'sort' | 'color';
-
-type SelectedFilters = {
+interface FilterState {
   category: string[];
   size: string[];
   sort: string;
   color: string[];
-};
+}
 
-//Mock Products Data - id, name, price, category, size, color
-const mockProducts = Product[]= [
-  {
-    id: 1,
-    name: "PC Race Master",
-    price: 1299,
-    category: "Baby Tees",
-    size: ["S", "M", "L"],
-    color: "White",
-  },
-  {
-    id: 2,
-    name: "Blood Edition",
-    price: 1199,
-    category: "Fitted Tees",
-    size: ["M", "L", "XL"],
-    color: "Black",
-  },
-  {
-    id: 3,
-    name: "Modern Tee",
-    price: 999,
-    category: "Oversized Tees",
-    size: ["L", "XL", "XXL"],
-    color: "White",
-  },
-  {
-    id: 4,
-    name: "Classic Blank",
-    price: 799,
-    category: "Blanks",
-    size: ["S", "M"],
-    color: "Pink",
-  },
-];
+interface FilterChip {
+  type: keyof FilterState;
+  value: string;
+  display: string;
+}
 
-export default function Filer() {
-  // States -> one to toggle modal, other to show the products based that will be filtered using filter, and the selectedFilter -> to make chips and load the products based on the filter
-  const [showFilterModal, setShowFilterModal] = useState(false);
-  const [products, setProducts] = useState(mockProducts);
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
+interface FilterOptions {
+  categories: string[];
+  sizes: string[];
+  sortOptions: string[];
+  colors: string[];
+}
+
+const EcommerceFilter: React.FC = () => {
+  //Mock Products for development testing
+  const mockProducts: Product[] = [
+    {
+      id: 1,
+      name: "PC Race Master",
+      price: 1299,
+      category: "Baby Tees",
+      size: ["S", "M", "L"],
+      color: "White",
+    },
+    {
+      id: 2,
+      name: "Blood Edition",
+      price: 1199,
+      category: "Fitted Tees",
+      size: ["M", "L", "XL"],
+      color: "Black",
+    },
+    {
+      id: 3,
+      name: "Modern Tee",
+      price: 999,
+      category: "Oversized Tees",
+      size: ["L", "XL", "XXL"],
+      color: "White",
+    },
+    {
+      id: 4,
+      name: "Classic Blank",
+      price: 799,
+      category: "Blanks",
+      size: ["S", "M"],
+      color: "Pink",
+    },
+  ];
+
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
+  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [selectedFilters, setSelectedFilters] = useState<FilterState>({
     category: [],
     size: [],
     sort: "",
     color: [],
   });
 
-  // Filter Options
-  const filterOptions = {
+  // Filter options
+  const filterOptions: FilterOptions = {
     categories: ["Baby Tees", "Fitted Tees", "Oversized Tees", "Blanks"],
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     sortOptions: ["High - Low Price", "Low - High Price"],
     colors: ["Pink", "White", "Black"],
   };
 
-  // Convert selected filter into chips ( better UI and it helps to cross the filter that user dont need)
-  const getActiveFilterChips = () => {
-    const chips = [];
+  // Convert selected filters into a chip format
+  const getActiveFilterChips = (): FilterChip[] => {
+    const chips: FilterChip[] = [];
 
-    // go through all the fields from selectedFilter.category and convert each item into UI chips
-    selectedFilters.category.forEach((cat) =>
+    selectedFilters.category.forEach((cat: string) =>
       chips.push({ type: "category", value: cat, display: cat })
     );
-    selectedFilters.size.forEach((size) =>
+
+    selectedFilters.size.forEach((size: string) =>
       chips.push({ type: "size", value: size, display: size })
     );
 
@@ -97,28 +106,121 @@ export default function Filer() {
       });
     }
 
-    selectedFilters.color.forEach((color) =>
+    selectedFilters.color.forEach((color: string) =>
       chips.push({ type: "color", value: color, display: color })
     );
 
     return chips;
   };
 
-  // Remove individual filter based on clicks -> we are just going to use the filter method to just filter selectedFilter!item that was crossed
-  const removalFilter = (chipType, chipValue) => {
-    setSelectedFilters((prev) => {
-      const updated = { ...prev };
+  // Remove Individual Filter
+  const removeFilter = (
+    chipType: keyof FilterState,
+    chipValue: string
+  ): void => {
+    setSelectedFilters((prev: FilterState) => {
+      const updated: FilterState = { ...prev };
 
       if (chipType === "sort") {
         updated.sort = "";
       } else {
-        updated[chipType] = updated[chipType].filter(
-          (item) => item !== chipValue
-        );
+        // type safe handling array
+        if (chipType === "category") {
+          updated.category = updated.category.filter(
+            (item: string) => item !== chipValue
+          );
+        } else if (chipType === "size") {
+          updated.size = updated.size.filter(
+            (item: string) => item !== chipValue
+          );
+        } else if (chipType === "color") {
+          updated.color = updated.color.filter(
+            (item: string) => item !== chipValue
+          );
+        }
       }
+
       return updated;
     });
   };
 
-  return <div className="pt-16">Hello filter</div>;
-}
+  // Clear all filters
+  const clearAllFilters = (): void => {
+    setSelectedFilters({
+      category: [],
+      size: [],
+      sort: "",
+      color: [],
+    });
+  };
+
+  // handle category selection
+  const toggleCategory = (category: string): void => {
+    setSelectedFilters((prev: FilterState) => ({
+      ...prev,
+      category: prev.category.includes(category)
+        ? prev.category.filter((c: string) => c !== category)
+        : [...prev.category, category],
+    }));
+  };
+
+  // Handle Sort Selection (radio button)
+
+  const selectSort = (sortOption: string): void => {
+    setSelectedFilters((prev: FilterState) => ({
+      ...prev,
+      sort: prev.sort === sortOption ? "" : sortOption,
+    }));
+  };
+
+  // Handle color
+  const toggleColor = (color: string): void => {
+    setSelectedFilters((prev: FilterState) => ({
+      ...prev,
+      color: prev.color.includes(color)
+        ? prev.color.filter((c: string) => c !== color)
+        : [...prev.color, color],
+    }));
+  };
+
+  // Handle Modal Close 
+  const closeModal  = ():void =>  { 
+    setShowFilterModal(false);
+  }
+
+  // handle modal open 
+  const openModal = ():void => { 
+    setShowFilterModal(true)
+  }
+
+  // active chips state 
+  const activeChips: FilterChip[] = getActiveFilterChips(); 
+  const hasActiveFilters: boolean  = activeChips.length > 0;
+
+  // ============ end of states ===================
+  return(
+    <div>
+      {/* filter section  */}
+      <div className="mb-6">
+        { 
+          hasActiveFilters ? (
+            // Show filter chips  when filters are active
+            <div className="bg-white/80  backdrop-blur-sm  border-gray-800  rounded-lg p-4 shadow-sm">
+              <div className="flex flex-wrap gap-2 items-center">
+                {activeChips.map((chip:FilterChip, index:number)=>(
+                  <div key={`${chip.type}-${chip.value}-${index}`}  className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm">
+                    <span> {chip.display}</span>
+                    <button></button>
+                    </div>
+                ))}
+                </div> 
+              </div>
+          )
+        }
+      </div>
+    </div>
+  )
+ 
+  // end
+};
+export default EcommerceFilter;
