@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { Trash2, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -43,7 +43,7 @@ const EcommerceFilter: React.FC = () => {
     {
       id: 1,
       name: "PC Race Master",
-      alt:"Product Image1",
+      alt: "Product Image1",
       image: "/images/pcrace.webp",
       price: 1299,
       category: "Baby Tees",
@@ -53,7 +53,7 @@ const EcommerceFilter: React.FC = () => {
     {
       id: 2,
       name: "Blood Edition",
-       alt:"Product Image1",
+      alt: "Product Image1",
       image: "/images/blood.webp",
       price: 1199,
       category: "Fitted Tees",
@@ -63,7 +63,7 @@ const EcommerceFilter: React.FC = () => {
     {
       id: 3,
       name: "Baby Tee",
-       alt:"Product Image1",
+      alt: "Product Image1",
       image: "/images/mdn.webp",
       price: 999,
       category: "Oversized Tees",
@@ -73,33 +73,14 @@ const EcommerceFilter: React.FC = () => {
     {
       id: 4,
       name: "Classic Blank",
-       alt:"Product Image1",
+      alt: "Product Image1",
       image: "/images/MDNPink.webp",
       price: 799,
       category: "Blanks",
       size: ["S", "M"],
       color: "Pink",
     },
-    {
-      id: 5,
-      name: "Modern Tee",
-       alt:"Product Image1",
-      image: "/images/HRU.webp",
-      price: 999,
-      category: "Oversized Tees",
-      size: ["L", "XL", "XXL"],
-      color: "White",
-    },
-    {
-      id: 6,
-      name: "Classic Blank",
-       alt:"Product Image1",
-      image: "/images/mdn.webp",
-      price: 799,
-      category: "Blanks",
-      size: ["S", "M"],
-      color: "Pink",
-    },
+  
   ];
 
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
@@ -246,11 +227,15 @@ const EcommerceFilter: React.FC = () => {
   const hasActiveFilters: boolean = activeChips.length > 0;
 
   return (
-    <div className=" pt-16 bg-gray-50 ">
+    <div className=" pt-16 bg-gray-50 relative ">
+      {/* heading Section */}
+      <div className="headingClass py-4 px-[8px] tracking-tight font-semibold tetx-md">
+        <div>Today's Agenda: Tees</div>
+      </div>
       {/* Filter Section */}
-      <div className="mb-6 absolute bottom-8 left-2 right-2 ">
+      <div className="mb-3 fixed bottom-8 left-2 right-2 ">
         {hasActiveFilters ? (
-          // Show filter chips when filters are active
+
           <div className="bg-black/10 backdrop-blur-lg border-[0.5px] border-[#aeadad] rounded-3xl px-2 py-4  w-full shadow-sm  ">
             <div className="flex flex-wrap gap-2 items-center justify-center">
               {activeChips.map((chip: FilterChip, index: number) => (
@@ -284,7 +269,7 @@ const EcommerceFilter: React.FC = () => {
           <Button
             onClick={openModal}
             variant={"outline"}
-            className="bg-black border  rounded-full shadow-sm hover:shadow-md transition-shadow fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-14 
+            className="bg-black border  rounded-full shadow-sm hover:shadow-md transition-shadow fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-10 
              text-white py-6 px-6 text-sm
             "
           >
@@ -294,58 +279,39 @@ const EcommerceFilter: React.FC = () => {
       </div>
 
       {/* Product Grid */}
-      {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
         {products.map((product: Product) => (
           <div
             key={product.id}
-            className="bg-white rounded-lg shadow-sm overflow-hidden"
+            className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col "
           >
-            <div className="aspect-square bg-gray-100 flex items-center justify-center">
-              <div className="text-4xl">👕</div>
+            <div className="flex-1 bg-gray-100 flex justify-center items-center p-2">
+              <Image
+                src={product.image}
+                alt={product.alt}
+                width={400}
+                height={400}
+                sizes="(max-width: 768px) 50vw, 33vw" // <-- helps Next.js pick the right src
+                quality={90} // <-- sharper
+                className="object-contain"
+                priority={product.id <= 4} //Only prioritize the first 4
+              />
             </div>
-            <div className="p-4">
-              <h3 className="font-medium text-sm">{product.name}</h3>
-              <p className="text-lg font-bold">
-                ₹ {product.price.toLocaleString()}
+            <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm">
+              <h3 className="font-inter text-xs font-normal">{product.name}</h3>
+              <p className="font-inter text-xs font-normal tracking-tight">
+                ₹ {product.price}
               </p>
             </div>
           </div>
         ))}
-      </div> */}
-
-      <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
-              {products.map((product: Product) => (
-                <div
-                  key={product.id}
-                  className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col "
-                >
-                  <div className="flex-1 bg-gray-100 flex justify-center items-center p-2">
-
-                    <Image
-                      src={product.image}
-                      alt={product.alt}
-                      width={400}
-                      height={400}
-                      sizes="(max-width: 768px) 50vw, 33vw" // <-- helps Next.js pick the right src
-                      quality={90} // <-- sharper
-                      className="object-contain"
-                      priority={product.id <=4} //Only prioritize the first 4 
-                    />
-                  </div>
-                  <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm">
-                    <h3 className="font-inter text-xs font-normal">{product.name}</h3>
-                    <p className="font-inter text-xs font-normal tracking-tight">
-                      {product.price}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      </div>
 
       {/* Filter Modal */}
       {showFilterModal && (
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  z-50">
-          <div className="bg-white  h-[60vh] rounded-3xl px-[12px] py-4 overflow-y-auto border-[0.25px] border-[#aeadad]   mx-[8px] mb-12">
+        <div className=" fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  z-50">
+          <div className="bg-white  rounded-3xl px-[12px] py-4 overflow-y-auto border-[0.25px] border-[#aeadad]   mx-[8px] mb-2">
             <div className="flex items-center justify-center mb-2">
               <h3 className="text-2xl tracking-tight">TEES</h3>
             </div>
@@ -452,15 +418,13 @@ const EcommerceFilter: React.FC = () => {
 
             {/* Apply Button */}
             <div>
-
-            
-            <Button
-              variant={"outline"}
-              onClick={applyFilters}
-              className=" bg-[#FCCEE9] text-black py-4 border border-black rounded-full   hover:bg-pink-500 transition-colors "
-            >
-              Filter & Sort
-            </Button>
+              <Button
+                variant={"outline"}
+                onClick={applyFilters}
+                className=" bg-[#FCCEE9] text-black py-4 border border-black rounded-full   hover:bg-black hover:text-white transition-colors "
+              >
+                Filter & Sort
+              </Button>
             </div>
           </div>
         </div>
