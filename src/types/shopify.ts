@@ -5,7 +5,7 @@ export interface ShopifyImage {
 
 export interface ShopifyMoney {
   amount: string;
-  currentCode: string;
+  currencyCode: string;
 }
 
 export interface ShopifySelectedOption {
@@ -17,7 +17,7 @@ export interface ShopifyVariant {
   id: string;
   title: string;
   price: ShopifyMoney;
-  selectedOption: ShopifySelectedOption[];
+  selectedOptions: ShopifySelectedOption[];
 }
 
 export interface ShopifyProduct {
