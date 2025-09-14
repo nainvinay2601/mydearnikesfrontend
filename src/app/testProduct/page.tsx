@@ -2,7 +2,6 @@
 import ProductGrid from "@/components/major/ProductGrid";
 import { getCollections, getProductsByCollection } from "@/lib/shopify/client";
 
-
 export default async function TestProductsPage() {
   try {
     // Test 1: Fetch collections
@@ -14,13 +13,13 @@ export default async function TestProductsPage() {
     if (collections.length > 0) {
       const firstCollection = collections[1];
       console.log("🔍 Fetching products for:", firstCollection.handle);
-      
+
       const products = await getProductsByCollection(firstCollection.handle);
       console.log("✅ Products fetched:", products.length);
 
       return (
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8 p-4 bg-green-100 rounded-lg">
+        <div className=" w-full h-full  py-8">
+          {/* <div className="mb-8 p-4 bg-green-100 rounded-lg">
             <h2 className="text-lg font-semibold text-green-800 mb-2">
               ✅ API Test Results
             </h2>
@@ -30,22 +29,24 @@ export default async function TestProductsPage() {
             <p className="text-sm text-green-600 mt-1">
               Testing collection:{firstCollection.title}
             </p>
-          </div>
+          </div> */}
 
           {products.length > 0 ? (
             <ProductGrid
               products={products}
               title={`Testing: ${firstCollection.title}`}
-              itemsPerPage={6}
+              itemsPerPage={4}
             />
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600">No products found in this collection</p>
+              <p className="text-gray-600">
+                No products found in this collection
+              </p>
             </div>
           )}
 
           {/* Debug info */}
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+          {/* <div className="mt-8 p-4 bg-gray-100 rounded-lg">
             <h3 className="font-semibold mb-2">Debug Info:</h3>
             <pre className="text-xs overflow-x-auto">
               {JSON.stringify(
@@ -60,7 +61,7 @@ export default async function TestProductsPage() {
                 2
               )}
             </pre>
-          </div>
+          </div> */}
         </div>
       );
     } else {
@@ -77,10 +78,9 @@ export default async function TestProductsPage() {
         </div>
       );
     }
-
   } catch (error) {
     console.error("❌ Test failed:", error);
-    
+
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="p-4 bg-red-100 rounded-lg">
