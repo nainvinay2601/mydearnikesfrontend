@@ -1,41 +1,49 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { RulerDimensionLine } from "lucide-react";
 
-const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-const SizeSelector = () => {
-  const [selectedSize, setSelectedSize] = useState<string>('S');
-  const handleSizeClick = (size: string) => {
-    setSelectedSize(size);
+interface ProductVariant {
+  id: string;
+  title: string;
+  availableForSale?: boolean;
+  selectedOptions: Array<{
+    name: string;
+    value: string;
+  }>;
+
+  price: {
+    amount: string;
+    currencyCode: string;
   };
-  return (
-    <div className="flex  items-center mt-5 px-[8px] w-full justify-between  ">
-      <div className="container flex  items-center gap-3">
-        <div className="heading text-[12px] font-regular">Size</div>
-        <div className="sizeContainer ">
-          {sizes.map((size) => (
-            <Button
-              variant={"outline"}
-              key={size}
-              className={`rounded-sm text-[10px] px-3 py-2 mr-3 ${
-                selectedSize === size
-                  ? "bg-black text-white"
-                  : "bg-white text-black border-[0.25px]  border-[#aeadad] border-opacity-25 "
-              } `}
-              onClick={() => handleSizeClick(size)}
-            >
-              {size}
-            </Button>
-          ))}
-        </div>
-      </div>
-      <div className="sizeChart text-xs  ">
-        <RulerDimensionLine size={18} strokeWidth={1}/> 
-      </div>
-    </div>
+}
+
+interface SizeSelectorProps {
+  variants: ProductVariant[];
+  onSizeSelect?: (variant: ProductVariant) => void;
+  className?: string;
+}
+
+const SizeSelector = ({
+  variants,
+  onSizeSelect,
+  className,
+}: SizeSelectorProps) => {
+  // Extract each unique size value from the array
+  const uniqueSizes = Array.from(
+    new Set(
+      variants.map((variant) => {
+        const sizeOption = variant.selectedOptions.find(
+          (option) => option.name.toLowerCase() === "size"
+        );
+        return sizeOption ? sizeOption.value : null;
+      })
+      .filter(Boolean)//Remove null / undefined 
+    )
   );
+
+
+  // Filter variants to only include one per unique size 
 };
 
 export default SizeSelector;
