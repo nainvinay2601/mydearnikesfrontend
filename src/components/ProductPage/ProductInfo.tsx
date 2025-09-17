@@ -1,94 +1,56 @@
-// import React from 'react'
-
-// const ProductInfo = () => {
-//   return (
-//     < >
-//         <div className='flex justify-between items-center px-[8px]  py-1'>
-//         <div className="productName capitalize font-medium text-md ">PC Race Master</div>
-//         <div className="productPrice text-sm">₹1299</div>
-//         </div>
-//         <div className="description text-[8px] px-[8px] py-1 ">
-//             <p>100% Cotton & 250 GSM</p>
-//             <p>Street Ready Look</p>
-//         </div>
-      
-//     </>
-//   )
-// }
-
-// export default ProductInfo
-
-// components/ProductInfo.tsx
-import React from 'react';
-import { SimpleProduct } from '@/types/shopify';
+import React from "react";
+import { ShopifyMoney, SimpleProduct } from "@/types/shopify";
+import { parse } from "path";
 
 interface ProductInfoProps {
   product: SimpleProduct;
-  currencySymbol?: string;
-  showDescription?: boolean;
-  className?: string;
 }
 
-const ProductInfo = ({ 
-  product, 
-  currencySymbol = '₹',
-  showDescription = true,
-  className = ''
-}: ProductInfoProps) => {
-  
-  // Format price to show proper decimals
-  const formatPrice = (amount: string) => {
-    const price = parseFloat(amount);
-    return price % 1 === 0 ? price.toString() : price.toFixed(2);
+const ProductInfo = ({ product }: ProductInfoProps) => {
+  // format the price
+  const formatPrice = (money: ShopifyMoney) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }).format(parseFloat(money.amount));
   };
 
-  // Extract description lines - you can customize this logic
-  const getDescriptionLines = () => {
-    if (!product.description) return [];
-    
-    // Split by line breaks or periods, filter empty lines
-    const lines = product.description
-      .split(/[\n\r\.]/)
-      .map(line => line.trim())
-      .filter(line => line.length > 0)
-      .slice(0, 2); // Take first 2 lines only
-    
-    return lines;
+  const extractDescription = (description: string) => {
+    // Extract key features from description or use defaults
+    const features = description?.match(
+      /\d+%.*?GSM|Cotton|Premium|Street.*?Ready/gi
+    ) || ["100% Cotton & 250 GSM", "Street Ready Look"];
+
+    return features.slice(0, 2);
   };
 
-  const descriptionLines = getDescriptionLines();
-
+  // Helper check for discoutn
+  const hasDiscount =
+    product.compareAtPrice &&
+    parseFloat(product.compareAtPrice.amount) >
+      parseFloat(product.price.amount);
   return (
-    <div className={className}>
-      {/* Product Name and Price */}
-      <div className='flex justify-between items-center px-[8px] py-1'>
-        <div className="productName capitalize font-medium text-md">
+    <>
+      <div className="flex justify-between items-center px-[8px] py-1">
+        <div className=" productName  capitalize font-medium  text-md">
           {product.title}
         </div>
-        <div className="productPrice text-sm">
-          {currencySymbol}{formatPrice(product.price.amount)}
-        </div>
-      </div>
-
-      {/* Product Description */}
-      {showDescription && (
-        <div className="description text-[8px] px-[8px] py-1">
-          {descriptionLines.length > 0 ? (
-            descriptionLines.map((line, index) => (
-              <p key={index}>{line}</p>
-            ))
-          ) : (
-            // Fallback description lines
-            <>
-              <p>Premium Quality Product</p>
-              <p>Street Ready Look</p>
-            </>
+        <div className="productPrice tet-sm ">
+          {formatPrice(product.price)}
+          {hasDiscount && (
+            <span className="text-xs text-gray-500 line-through ml-2">
+              {formatPrice(product.compareAtPrice!)}
+            </span>
           )}
         </div>
-      )}
-    </div>
+      </div>
+      <div className="description text-[8px]  px-[8px]  py-1">
+        {extractDescription(product.description || "").map((feature, index) => (
+          <p key={index}>{feature}</p>
+        ))}
+      </div>
+    </>
   );
 };
 
 export default ProductInfo;
-
