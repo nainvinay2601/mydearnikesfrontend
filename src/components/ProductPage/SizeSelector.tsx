@@ -1,178 +1,66 @@
-// "use client";
-
-// import { useState } from "react";
-// import { Button } from "../ui/button";
-// import { RulerDimensionLine } from "lucide-react";
-
-// import { SimpleProduct } from "@/types/shopify";
-
-// interface SizeSelectorProps {
-//   product: SimpleProduct;
-//   onSizeChange?: (size: string, variant?: any) => void;
-// }
-
-// const SizeSelector = ({ product, onSizeChange }: SizeSelectorProps) => {
-//   const [selectedSize, setSelectedSize] = useState<string>("");
-//   // Extract sizes from product variants
-//   const extractSizes = () => {
-//     if (!product.variants || product.variants.length === 0) {
-//       return ["XS", "S", "M", "L", "XL", "XXL"];
-//     }
-
-//     const sizes = product.variants
-//       .filter((variants) => variants.availableForSale)
-//       .map((variant) => {
-//         // Check if the size in selectedOptions
-//         const sizeOption = variant.selectedOptions?.find((option) =>
-//           option.name.toLowerCase().includes("sizes")
-//         );
-//         return sizeOption?.value || variant.title.split("/")[0]; // fallback to first part of the title
-//       })
-//       .filter((size, index, arr) => arr.indexOf(size) === index); // remove the duplicates
-
-//     return sizes.length > 0 ? sizes : ["XS", "S", "M", "L", "XL", "XXL"];
-//   };
-
-//   const sizes = extractSizes();
-//   const handleSizeClick = (size: string) => {
-//     setSelectedSize(size);
-//     // Find the matching size for the selected size
-//     const matchingVariant = product.variants?.find((variant) => {
-//       const sizeOption = variant.selectedOptions?.find((option) =>
-//         option.name.toLowerCase().includes("size")
-//       );
-//       return sizeOption?.value === size || variant.title.includes(size);
-//     });
-
-//     // call parent callback if provided
-//     if (onSizeChange) {
-//       onSizeChange(size, matchingVariant);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <div className="flex items-center  mt-5  px-[8px] w-full justify-between">
-//         <div className="container flex items-center gap-3">
-//           <div className="heading text-[12px] font-regular">Size</div>
-//           <div className="sizeContainer">
-//             {sizes.map((size) => (
-//               <Button
-//                 variant={"outline"}
-//                 key={size}
-//                 className={`rounded-sm text-[10px] px-3 py-2 mr-3 ${
-//                   selectedSize === size
-//                     ? "bg-black text-white"
-//                     : "bg-white text-black border-[0.25px] border-[#aeadad] border-opacity-25"
-//                 }`}
-//                 onClick={() => handleSizeClick(size)}
-//               >
-//                 {size}
-//               </Button>
-//             ))}
-//           </div>
-//         </div>
-//         <div className="sizeChart text-xs">
-//           <RulerDimensionLine size={18} strokeWidth={1} />
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default SizeSelector;
 "use client";
 
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { RulerDimensionLine } from "lucide-react";
-// import { SimpleProduct } from "@/types/shopify";
-import { SimpleProduct } from "@/types/shopify";
+import { SimpleProduct, ProductVariant } from "@/types/shopify";
 
 interface SizeSelectorProps {
   product: SimpleProduct;
-  onSizeChange?: (size: string, variant?: any) => void;
+  selectedSize: string;
+  onSizeChange: (size: string) => void;
 }
 
-const SizeSelector = ({ product, onSizeChange }: SizeSelectorProps) => {
-  const [selectedSize, setSelectedSize] = useState<string>('');
-
-  // Debug: Log the variants to see what we're getting
-  console.log("Product variants in SizeSelector:", product.variants);
-  console.log("Variants length:", product.variants?.length);
-
-  // Extract sizes from product variants
+const SizeSelector = ({
+  product,
+  selectedSize,
+  onSizeChange,
+}: SizeSelectorProps) => {
+  // Extract sizes from variants and track availability
   const extractSizes = () => {
-    // Debug fallback first
+    // Fallback to default sizes if no variants
     if (!product.variants || product.variants.length === 0) {
-      console.log("No variants found, using fallback sizes");
-      return ["XS", "S", "M", "L", "XL", "XXL"];
+      return { sizes: ["XS", "S", "M", "L", "XL", "XXL"], availability: {} };
     }
-    
-    console.log("Processing variants:", product.variants);
-    
-    const sizes = product.variants
-      .filter(variant => {
-        console.log("Checking variant availability:", variant.availableForSale, variant);
-        return variant.availableForSale;
-      })
-      .map(variant => {
-        console.log("Processing variant for size:", variant);
-        console.log("Variant selectedOptions:", variant.selectedOptions);
-        
-        // Check if size is in selectedOptions
-        const sizeOption = variant.selectedOptions?.find(option => {
-          console.log("Checking option:", option);
-          return option.name.toLowerCase().includes('size');
-        });
-        
-        console.log("Found size option:", sizeOption);
-        
-        if (sizeOption) {
-          return sizeOption.value;
+
+    const sizeData: {
+      [key: string]: { available: boolean; variant: ProductVariant };
+    } = {};
+
+    // Process each variant to extract size options
+    product.variants.forEach((variant) => {
+      const sizeOption = variant.selectedOptions?.find((option) =>
+        option.name.toLowerCase().includes("size")
+      );
+
+      if (sizeOption) {
+        const size = sizeOption.value;
+        if (!sizeData[size]) {
+          sizeData[size] = { available: false, variant };
         }
-        
-        // Fallback: try to extract from title (common Shopify pattern)
-        // Titles like "Red / M" or "Blue - Large"
-        const titleParts = variant.title.split(/[\s\/\-]+/);
-        console.log("Title parts:", titleParts);
-        
-        // Look for common size patterns
-        const sizePattern = /^(XXS|XS|S|M|L|XL|XXL|XXXL|\d+)$/i;
-        const foundSize = titleParts.find(part => sizePattern.test(part.trim()));
-        
-        console.log("Found size from title:", foundSize);
-        return foundSize || variant.title;
-      })
-      .filter((size, index, arr) => {
-        // Remove duplicates and empty values
-        return size && arr.indexOf(size) === index;
-      });
-    
-    console.log("Extracted sizes:", sizes);
-    return sizes.length > 0 ? sizes : ["XS", "S", "M", "L", "XL", "XXL"];
+        // Mark as available if any variant with this size is in stock
+        if (variant.availableForSale) {
+          sizeData[size].available = true;
+        }
+      }
+    });
+
+    const sizes = Object.keys(sizeData);
+    const availability = Object.fromEntries(
+      Object.entries(sizeData).map(([size, data]) => [size, data.available])
+    );
+
+    return sizes.length > 0
+      ? { sizes, availability }
+      : { sizes: ["XS", "S", "M", "L", "XL", "XXL"], availability: {} };
   };
 
-  const sizes = extractSizes();
-  console.log("Final sizes array:", sizes);
+  const { sizes, availability } = extractSizes();
 
   const handleSizeClick = (size: string) => {
-    setSelectedSize(size);
-    
-    // Find matching variant for the selected size
-    const matchingVariant = product.variants?.find(variant => {
-      const sizeOption = variant.selectedOptions?.find(option => 
-        option.name.toLowerCase().includes('size')
-      );
-      return sizeOption?.value === size || variant.title.includes(size);
-    });
-    
-    console.log("Matching variant for size", size, ":", matchingVariant);
-    
-    // Call parent callback if provided
-    if (onSizeChange) {
-      onSizeChange(size, matchingVariant);
-    }
+    // Don't allow selection of unavailable sizes
+    if (availability[size] === false) return;
+    onSizeChange(size);
   };
 
   return (
@@ -180,27 +68,35 @@ const SizeSelector = ({ product, onSizeChange }: SizeSelectorProps) => {
       <div className="container flex items-center gap-3">
         <div className="heading text-[12px] font-regular">Size</div>
         <div className="sizeContainer">
-          {sizes.map((size) => (
-            <Button
-              variant={"outline"}
-              key={size}
-              className={`rounded-sm text-[10px] px-3 py-2 mr-3 ${
-                selectedSize === size
-                  ? "bg-black text-white"
-                  : "bg-white text-black border-[0.25px] border-[#aeadad] border-opacity-25"
-              }`}
-              onClick={() => handleSizeClick(size)}
-            >
-              {size}
-            </Button>
-          ))}
+          {sizes.map((size) => {
+            const isAvailable = availability[size] !== false;
+            const isSelected = selectedSize === size;
+
+            return (
+              <Button
+                variant={"outline"}
+                key={size}
+                className={`rounded-sm text-[10px] px-3 py-2 mr-3 transition-all ${
+                  isSelected
+                    ? "bg-black text-white"
+                    : isAvailable
+                    ? "bg-white text-black border-[0.25px] border-[#aeadad] border-opacity-25 hover:border-gray-400"
+                    : "bg-gray-100 text-gray-400 border-[0.25px] border-gray-300 cursor-not-allowed"
+                }`}
+                onClick={() => handleSizeClick(size)}
+                disabled={!isAvailable}
+              >
+                {size}
+              </Button>
+            );
+          })}
         </div>
       </div>
+      {/* Size chart icon - could link to size guide modal */}
       <div className="sizeChart text-xs">
-        <RulerDimensionLine size={18} strokeWidth={1}/>
+        <RulerDimensionLine size={18} strokeWidth={1} />
       </div>
     </div>
   );
 };
-
 export default SizeSelector;

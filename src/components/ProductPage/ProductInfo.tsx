@@ -1,9 +1,10 @@
 import React from "react";
-import { ShopifyMoney, SimpleProduct } from "@/types/shopify";
+import { ShopifyMoney, SimpleProduct, ProductVariant } from "@/types/shopify";
 import { parse } from "path";
 
 interface ProductInfoProps {
   product: SimpleProduct;
+  selectedVariant?: ProductVariant | null;
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {

@@ -1,0 +1,309 @@
+// import { create } from "zustand";
+
+// import { persist } from "zustand/middleware";
+// import {  ProductVariant, ShopifyMoney } from "@/types/shopify";
+
+
+
+// export interface CartItem {
+//   id: string; //variant id
+//   productId: string;
+//   productTitle: string;
+//   variantTitle: string;
+//   price: ShopifyMoney;
+//   quantity: number;
+//   image?: {
+//     url: string;
+//     altText: string | null;
+//   };
+//   selectedOptions: Array<{
+//     name: string;
+//     value: string;
+//   }>;
+// }
+
+// interface CartStore {
+//   items: CartItem[];
+//   totalItems: number;
+//   isLoading: boolean;
+//   error: string | null;
+
+//   //   Actions
+//   addToCart: (
+//     variant: ProductVariant,
+//     quantity: number,
+//     productTitle: string
+//   ) => Promise<void>;
+
+//   updateQuantity: (variantId: string, quantity: number) => void;
+//   removeItem: (variantId: string) => void;
+//   clearCart: () => void;
+//   getTotalPrice: () => number;
+//   clearError: () => void;
+// }
+
+// export const useCartStore = create<CartStore>()(
+//   persist(
+//     (set, get) => ({
+//       items: [],
+//       totalItems: 0,
+//       isLoading: false,
+//       error: null,
+
+//       addToCart: async (
+//         variant: ProductVariant,
+//         quantity: number,
+//         productTitle: string
+//       ) => {
+//         try {
+//           set({ isLoading: true, error: null });
+//           const state = get();
+//           const existingItem = state.items.find(
+//             (item) => item.id === variant.id
+//           );
+//           if (existingItem) {
+//             // Update existing item
+//             set({
+//               items: state.items.map((item) =>
+//                 item.id === variant.id
+//                   ? { ...item, quantity: item.quantity + quantity }
+//                   : item
+//               ),
+//               totalItems: state.totalItems + quantity,
+//               isLoading: false,
+//             });
+//           } else {
+//             // Add new item in the cart instead of updating existing item
+//             const newItem: CartItem = {
+//               id: variant.id,
+//               productId: variant.id,
+//               productTitle,
+//               variantTitle: variant.title,
+//               price: variant.price,
+//               quantity,
+//               image: variant.image,
+//               selectedOptions: variant.selectedOptions,
+//             };
+//             set({
+//               items: [...state.items, newItem],
+//               totalItems: state.totalItems + quantity,
+//               isLoading: false,
+//             });
+//           }
+//         } catch (error) {
+//           set({
+//             error:
+//               error instanceof Error ? error.message : "Failed to add to cart",
+//             isLoading: false,
+//           });
+
+//           throw error;
+//         }
+//       },
+
+//       // Update the quantity
+//       updateQuantity: (variantId: string, quantity: number) => {
+//         const state = get();
+//         if (quantity <= 0) {
+//           const removeItem = state.items.find((item) => item.id === variantId);
+//           set({
+//             items: state.items.filter((item) => item.id !== variantId),
+//             totalItems: state.totalItems - (removeItem?.quantity || 0),
+//           });
+//           return;
+//         }
+
+//         const oldItem = state.items.find((item) => item.id === variantId);
+//         const quantityDiff = quantity - (oldItem?.quantity || 0);
+
+//         set({
+//           items: state.items.map((item) =>
+//             item.id === variantId ? { ...item, quantity } : item
+//           ),
+//           totalItems: state.totalItems + quantityDiff,
+//         });
+//       },
+
+//       removeItem: (variantId: string) => {
+//         get().updateQuantity(variantId, 0);
+//       },
+
+//       clearCart: () => {
+//         set({ items: [], totalItems: 0 });
+//       },
+
+//       getTotalPrice: () => {
+//         return get().items.reduce((total, item) => {
+//           return total + parseFloat(item.price.amount) * item.quantity;
+//         }, 0);
+//       },
+
+//       clearError: () => {
+//         set({ error: null });
+//       },
+//     }),
+//     {
+//       name: "cart-storage",
+//     }
+//   )
+// );
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { ProductVariant, ShopifyMoney } from "@/types/shopify";
+
+export interface CartItem {
+  id: string; // This should be a unique combination of product ID and selected options
+  productId: string;
+  productTitle: string;
+  variantTitle: string;
+  price: ShopifyMoney;
+  quantity: number;
+  image?: {
+    url: string;
+    altText: string | null;
+  };
+  selectedOptions: Array<{
+    name: string;
+    value: string;
+  }>;
+}
+
+interface CartStore {
+  items: CartItem[];
+  totalItems: number;
+  isLoading: boolean;
+  error: string | null;
+
+  // Actions
+  addToCart: (
+    variant: ProductVariant,
+    quantity: number,
+    productTitle: string,
+    productId: string // Add productId as a separate parameter
+  ) => Promise<void>;
+
+  updateQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (itemId: string) => void;
+  clearCart: () => void;
+  getTotalPrice: () => number;
+  clearError: () => void;
+}
+
+// Helper function to generate a unique ID for a cart item based on variant and selected options
+const generateCartItemId = (variant: ProductVariant): string => {
+  // Create a unique key based on variant ID and selected options
+  const optionsKey = variant.selectedOptions
+    .map(opt => `${opt.name}:${opt.value}`)
+    .sort()
+    .join('|');
+  
+  return `${variant.id}-${optionsKey}`;
+};
+
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      totalItems: 0,
+      isLoading: false,
+      error: null,
+
+      addToCart: async (
+        variant: ProductVariant,
+        quantity: number,
+        productTitle: string,
+        productId: string // Accept productId as a parameter
+      ) => {
+        try {
+          set({ isLoading: true, error: null });
+          const state = get();
+          
+          // Generate a unique ID for this variant combination
+          const itemId = generateCartItemId(variant);
+          
+          const existingItem = state.items.find((item) => item.id === itemId);
+          
+          if (existingItem) {
+            // Update existing item
+            set({
+              items: state.items.map((item) =>
+                item.id === itemId
+                  ? { ...item, quantity: item.quantity + quantity }
+                  : item
+              ),
+              totalItems: state.totalItems + quantity,
+              isLoading: false,
+            });
+          } else {
+            // Add new item
+            const newItem: CartItem = {
+              id: itemId,
+              productId: productId, // Use the passed productId
+              productTitle,
+              variantTitle: variant.title,
+              price: variant.price,
+              quantity,
+              image: variant.image,
+              selectedOptions: variant.selectedOptions,
+            };
+            set({
+              items: [...state.items, newItem],
+              totalItems: state.totalItems + quantity,
+              isLoading: false,
+            });
+          }
+        } catch (error) {
+          set({
+            error:
+              error instanceof Error ? error.message : "Failed to add to cart",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
+      updateQuantity: (itemId: string, quantity: number) => {
+        const state = get();
+        if (quantity <= 0) {
+          const removeItem = state.items.find((item) => item.id === itemId);
+          set({
+            items: state.items.filter((item) => item.id !== itemId),
+            totalItems: state.totalItems - (removeItem?.quantity || 0),
+          });
+          return;
+        }
+
+        const oldItem = state.items.find((item) => item.id === itemId);
+        const quantityDiff = quantity - (oldItem?.quantity || 0);
+
+        set({
+          items: state.items.map((item) =>
+            item.id === itemId ? { ...item, quantity } : item
+          ),
+          totalItems: state.totalItems + quantityDiff,
+        });
+      },
+
+      removeItem: (itemId: string) => {
+        get().updateQuantity(itemId, 0);
+      },
+
+      clearCart: () => {
+        set({ items: [], totalItems: 0 });
+      },
+
+      getTotalPrice: () => {
+        return get().items.reduce((total, item) => {
+          return total + parseFloat(item.price.amount) * item.quantity;
+        }, 0);
+      },
+
+      clearError: () => {
+        set({ error: null });
+      },
+    }),
+    {
+      name: "cart-storage",
+    }
+  )
+);
