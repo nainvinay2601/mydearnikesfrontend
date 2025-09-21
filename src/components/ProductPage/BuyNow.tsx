@@ -1,7 +1,10 @@
 "use client";
+
+import React from "react";
 import { SimpleProduct, ProductVariant } from "@/types/shopify";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "../ui/button";
+import { createCartCheckout } from "@/lib/shopify/checkout";
 
 interface BuyNowProps {
   product: SimpleProduct;
@@ -9,12 +12,10 @@ interface BuyNowProps {
 }
 
 const BuyNow = ({ product, selectedVariant }: BuyNowProps) => {
-  const { addToCart, items, getTotalPrice, isLoading, clearError } =
-    useCartStore();
+  const { addToCart, isLoading, clearError } = useCartStore();
+  const [checkoutLoading, setCheckoutLoading] = React.useState(false);
 
-  // Handle buy now flow: add to cart + checkout
   const handleBuyNow = async () => {
-    // Validate variant selection
     if (!selectedVariant) {
       alert("Please select size and color first");
       return;
@@ -26,39 +27,46 @@ const BuyNow = ({ product, selectedVariant }: BuyNowProps) => {
     }
 
     try {
+      setCheckoutLoading(true);
       clearError();
-      // Add item to cart
-      // await addToCart(selectedVariant, 1, product.title);
 
-      // Calculate total and show checkout confirmation
       const itemPrice = parseFloat(selectedVariant.price.amount);
-      // add item to cart
+
+      // Add to local cart
       await addToCart(selectedVariant, 1, product.title);
 
       const confirmed = confirm(
-        `Proceed to checkout?\nTotal: ₹${itemPrice.toFixed(2)}`
+        `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${
+          selectedVariant.title
+        }\nPrice: ₹${itemPrice.toFixed(2)}\n\nUsing modern Cart API`
       );
 
       if (confirmed) {
-        alert(
-          "Redirecting to checkout... (In real app, this would go to Shopify checkout)"
+        console.log(
+          "Creating Cart API checkout for variant:",
+          selectedVariant.id
         );
 
-        const checkoutUrl = createShopifyCheckoutUrl(selectedVariant.id, 1);
-        window.location.href = checkoutUrl;
+        // Use Cart API instead of deprecated checkout
+        const cart = await createCartCheckout(selectedVariant.id, 1);
+
+        console.log("Cart created with checkout URL:", cart.checkoutUrl);
+
+        // Redirect to Shopify checkout
+        window.location.href = cart.checkoutUrl;
       }
     } catch (error) {
-      console.error("Buy now error:", error);
-      alert("Failed to proceed to checkout. Please try again.");
+      console.error("Cart API Buy now failed:", error);
+      alert(
+        `Checkout failed: ${
+          error.message || error
+        }\n\nCheck console for details.`
+      );
+    } finally {
+      setCheckoutLoading(false);
     }
   };
 
-  const createShopifyCheckoutUrl = (variantId: string, quantity: number) => {
-    const shopDomain = "mydearnikess.myshopify.com";
-    return `https://${shopDomain}/cart/${variantId}:${quantity}`;
-  };
-
-  // Determine button state
   const isOutOfStock =
     !product.availableForSale ||
     (selectedVariant && !selectedVariant.availableForSale);
@@ -70,10 +78,14 @@ const BuyNow = ({ product, selectedVariant }: BuyNowProps) => {
       <Button
         className="rounded-none w-full"
         onClick={handleBuyNow}
-        disabled={isOutOfStock || needsSelection || isLoading}
+        disabled={
+          isOutOfStock || needsSelection || isLoading || checkoutLoading
+        }
       >
-        {isLoading
-          ? "Processing..."
+        {checkoutLoading
+          ? "Creating Cart..."
+          : isLoading
+          ? "Adding to Cart..."
           : isOutOfStock
           ? "Out of Stock"
           : needsSelection
