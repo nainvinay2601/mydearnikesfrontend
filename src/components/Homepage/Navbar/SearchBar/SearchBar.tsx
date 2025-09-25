@@ -57,7 +57,7 @@ const SearchBar = () => {
 
 
   return (
-    <div className="px-[8px] py-3 relative border-b-[0.5px] border-[#aeadad] mb-2">
+    <div className="px-[8px] bg-white py-3 relative border-b-[0.5px] border-[#aeadad] mb-2">
 
       {/* INPUT BOX  */}
    

@@ -4,10 +4,10 @@ import NavCarousel from "../NavImageCarousel/NavCarousel";
 
 const SearchComponent = () => {
   return (
-    <>
+    <div className="bg-white">
       <SearchBar />
       <NavCarousel />
-    </>
+    </div>
   );
 };
 

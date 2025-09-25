@@ -101,6 +101,8 @@ export default function ProductPage({ params }: ProductPageProps) {
     null
   );
 
+  const [quantity, setQuantity] = useState(1);
+
   // Fetch products
   useEffect(() => {
     const fetchProduct = async () => {
@@ -187,8 +189,17 @@ export default function ProductPage({ params }: ProductPageProps) {
         selectedColor={selectedColor}
         onColorChange={setSelectedColor}
       />
-      <ProductQuantity product={product} selectedVariant={selectedVariant} />
-      <BuyNow product={product} selectedVariant={selectedVariant} />
+      <ProductQuantity
+        product={product}
+        selectedVariant={selectedVariant}
+        quantity={quantity}
+        setQuantity={setQuantity}
+      />
+      <BuyNow
+        product={product}
+        selectedVariant={selectedVariant}
+        quantity={quantity}
+      />
       <ProductAccordion product={product} />
     </div>
   );

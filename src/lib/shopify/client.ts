@@ -1,42 +1,4 @@
-// // lib/shopify/client.ts
-// const SHOPIFY_STORE_URL = process.env.NEXT_PUBLIC_SHOPIFY_STORE_URL!;
-// const SHOPIFY_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
-// if (!SHOPIFY_STORE_URL || !SHOPIFY_ACCESS_TOKEN) {
-//   throw new Error('Missing Shopify environment variables');
-// }
-
-// export async function queryShopify<T = any>(query: string, variables?: any): Promise<T> {
-//   console.log("====================================");
-//   console.log("URL:", SHOPIFY_STORE_URL);
-//   console.log("TOKEN:", SHOPIFY_ACCESS_TOKEN.substring(0, 10) + "...");
-//   console.log("====================================");
-
-//   const response = await fetch(SHOPIFY_STORE_URL, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "X-Shopify-Storefront-Access-Token": SHOPIFY_ACCESS_TOKEN,
-//     },
-//     body: JSON.stringify({ query, variables }),
-//     cache: "no-store",
-//   });
-
-//   console.log("RESPONSE STATUS:", response.status);
-//   const text = await response.text();
-//   console.log("Response Text", text);
-
-//   if (!response.ok) {
-//     throw new Error(`Shopify API Error: ${response.status} - ${text}`);
-//   }
-
-//   const data = JSON.parse(text);
-//   if (data.errors) {
-//     throw new Error(`GraphQL Error: ${JSON.stringify(data.errors)}`);
-//   }
-
-//   return data;
-// }
 
 import {
   Product,
@@ -394,6 +356,204 @@ const GET_COLLECTION_INFO_QUERY = `
   }
 `;
 
+//*========================== GRAPHQL QUERY - GET BEST SELLING PRODUCTS  ==================================
+
+const GET_BEST_SELLING_PRODUCTS_QUERY = `
+  query getBestSellingProducts($first: Int!) {
+    products(first: $first, sortKey: BEST_SELLING) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          descriptionHtml
+          availableForSale
+          tags
+          productType
+          vendor
+          featuredImage {
+            id
+            url
+            altText
+            width
+            height
+          }
+          images(first: 10) {
+            edges {
+              node {
+                id
+                url
+                altText
+                width
+                height
+              }
+            }
+          }
+          variants(first: 100) {
+            edges {
+              node {
+                id
+                title
+                availableForSale
+                quantityAvailable
+                price {
+                  amount
+                  currencyCode
+                }
+                compareAtPrice {
+                  amount
+                  currencyCode
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+                image {
+                  id
+                  url
+                  altText
+                  width
+                  height
+                }
+              }
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          compareAtPriceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          options {
+            id
+            name
+            values
+          }
+          seo {
+            title
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
+//*========================== GRAPHQL QUERY - GET LATEST PRODUCTS  ==================================
+
+
+const GET_LATEST_PRODUCTS_QUERY = `
+  query getLatestProducts($first: Int!) {
+    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          descriptionHtml
+          availableForSale
+          tags
+          productType
+          vendor
+          featuredImage {
+            id
+            url
+            altText
+            width
+            height
+          }
+          images(first: 10) {
+            edges {
+              node {
+                id
+                url
+                altText
+                width
+                height
+              }
+            }
+          }
+          variants(first: 100) {
+            edges {
+              node {
+                id
+                title
+                availableForSale
+                quantityAvailable
+                price {
+                  amount
+                  currencyCode
+                }
+                compareAtPrice {
+                  amount
+                  currencyCode
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+                image {
+                  id
+                  url
+                  altText
+                  width
+                  height
+                }
+              }
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          compareAtPriceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          options {
+            id
+            name
+            values
+          }
+          seo {
+            title
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
+
 //*========================== API FUNCTIONS ==================================
 
 // GetCollections
@@ -484,5 +644,34 @@ export async function getCollectionInfo(
   } catch (error) {
     console.error(`Error fetching collection info "${handle}":`, error);
     throw new Error(`Failed to fetch collection info "${handle}"`);
+  }
+}
+// Get best selling products
+export async function getBestSellingProducts(first: number = 20): Promise<SimpleProduct[]> {
+  try {
+    const response = await shopifyFetch<ShopifyProductsResponse>({
+      query: GET_BEST_SELLING_PRODUCTS_QUERY,
+      variables: { first },
+    });
+
+    return response.products.edges.map((edge) => transformProduct(edge.node));
+  } catch (error) {
+    console.error("Error fetching best-selling products:", error);
+    throw new Error("Failed to fetch best-selling products");
+  }
+}
+
+// Get Latest Products
+export async function getLatestProducts(first: number = 4): Promise<SimpleProduct[]> {
+  try {
+    const response = await shopifyFetch<ShopifyProductsResponse>({
+      query: GET_LATEST_PRODUCTS_QUERY,
+      variables: { first },
+    });
+
+    return response.products.edges.map((edge) => transformProduct(edge.node));
+  } catch (error) {
+    console.error("Error fetching latest products:", error);
+    throw new Error("Failed to fetch latest products");
   }
 }
