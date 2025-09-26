@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 768px) 50vw, 33vw"
             quality={90}
             className="object-contain h-[240px] md:h-[320px] lg:h-[530px]"
-            priority={product.id <= 4}
+            priority={Number(product.id) <= 4}
           />
         ) : (
           <div className="w-[400px] h-[400px] bg-gray-200 flex items-center justify-center">

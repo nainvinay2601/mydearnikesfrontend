@@ -240,42 +240,54 @@ const BuyNow = ({ product, selectedVariant, quantity }: BuyNowProps) => {
 
       const itemPrice = parseFloat(selectedVariant.price.amount);
       const totalPrice = itemPrice * quantity;
-      
+
       // Add to local cart with selected quantity
-      await addToCart(selectedVariant, quantity, product.title);
+      await addToCart(selectedVariant, quantity, product.title, product.id);
 
       const confirmed = confirm(
-        `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${selectedVariant.title}\nQuantity: ${quantity}\nTotal: ₹${totalPrice.toFixed(2)}`
+        `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${
+          selectedVariant.title
+        }\nQuantity: ${quantity}\nTotal: ₹${totalPrice.toFixed(2)}`
       );
 
       if (confirmed) {
-        console.log(`Creating Cart checkout for ${quantity}x variant:`, selectedVariant.id);
-        
+        console.log(
+          `Creating Cart checkout for ${quantity}x variant:`,
+          selectedVariant.id
+        );
+
         // Use Cart API with selected quantity
         const cart = await createCartCheckout(selectedVariant.id, quantity);
-        
+
         console.log("Cart created with checkout URL:", cart.checkoutUrl);
-        
+
         // Redirect to Shopify checkout
         window.location.href = cart.checkoutUrl;
       }
     } catch (error) {
       console.error("Cart API Buy now failed:", error);
-      alert(`Checkout failed: ${error.message || error}\n\nCheck console for details.`);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      alert(`Checkout failed: ${errorMessage}\n\nCheck console for details.`);
     } finally {
       setCheckoutLoading(false);
     }
   };
 
-  const isOutOfStock = !product.availableForSale || (selectedVariant && !selectedVariant.availableForSale);
-  const needsSelection = !selectedVariant && (product.variants?.length || 0) > 1;
+  const isOutOfStock =
+    !product.availableForSale ||
+    (selectedVariant && !selectedVariant.availableForSale);
+  const needsSelection =
+    !selectedVariant && (product.variants?.length || 0) > 1;
 
   return (
     <div className="pt-3 px-[8px]">
       <Button
         className="rounded-none w-full"
         onClick={handleBuyNow}
-        disabled={isOutOfStock || needsSelection || isLoading || checkoutLoading}
+        disabled={
+          isOutOfStock || needsSelection || isLoading || checkoutLoading
+        }
       >
         {checkoutLoading
           ? "Creating Cart..."
