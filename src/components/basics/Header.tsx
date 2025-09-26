@@ -49,7 +49,7 @@ const Header = () => {
   //   }
   // };
 
-  const handleNavigation = (key: string, href?: string) => {
+  const handleNavigation = (key: string) => {
     if (key === "all") {
       setActive(null);
       router.push("/category/all-products");
@@ -124,7 +124,7 @@ const Header = () => {
                 { key: "tees", label: "Tees" }, // No href = show component
                 { key: "bottoms", label: "Bottoms" }, // No href = show component
                 { key: "search", label: "Search" }, // No href = show component
-              ].map(({ key, label, href }) => (
+              ].map(({ key, label}) => (
                 <Button
                   key={key}
                   variant="outline"
@@ -132,7 +132,7 @@ const Header = () => {
                   className={`rounded-full px-3 text-sm border-b-[0.5px] border-[#aeadad] hover:bg-gray-100 transition-colors ${
                     active === key ? "bg-black text-white hover:bg-black" : ""
                   }`}
-                  onClick={() => handleNavigation(key, href)}
+                  onClick={() => handleNavigation(key)}
                 >
                   {label}
                 </Button>
