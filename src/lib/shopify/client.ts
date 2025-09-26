@@ -1,5 +1,3 @@
-
-
 import {
   Product,
   Collection,
@@ -28,10 +26,10 @@ async function shopifyFetch<T>({
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json", // tells shopify the request body is json
-      "X-Shopify-Storefront-Access-Token": storefrontAccessToken, // authenticates our request using our access token
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
     },
-    body: JSON.stringify({ query, variables }), // convert em into json and send it as request body
+    body: JSON.stringify({ query, variables }),
   });
 
   if (!response.ok) {
@@ -41,13 +39,13 @@ async function shopifyFetch<T>({
   const { data, errors } = await response.json();
 
   if (errors) {
-    throw new Error(`Graphql  errors:${JSON.stringify(errors)}`);
+    throw new Error(`Graphql errors:${JSON.stringify(errors)}`);
   }
 
   return data;
 }
 
-//* ==== Helper function to transform shopify product into simple product ======
+// Helper function to transform shopify product into simple product
 function transformProduct(product: Product): SimpleProduct {
   return {
     id: product.id,
@@ -69,8 +67,7 @@ function transformProduct(product: Product): SimpleProduct {
   };
 }
 
-//* ========== Helpfer function to transform shopify collection to simple collection ========
-
+// Helper function to transform shopify collection to simple collection
 function transformCollection(collection: Collection): SimpleCollection {
   return {
     id: collection.id,
@@ -84,8 +81,7 @@ function transformCollection(collection: Collection): SimpleCollection {
   };
 }
 
-//*========================== GRAPHQL QUERY - GET COLLECTIONS  ==================================
-
+// UPDATED: Collections query (collections are always published if accessible via Storefront API)
 const GET_COLLECTIONS_QUERY = `
   query getCollections {
     collections(first: 20) {
@@ -113,8 +109,7 @@ const GET_COLLECTIONS_QUERY = `
   }
 `;
 
-//*========================== GRAPHQL QUERY - GET COLLECTION WITH  PRODUCTS ==================================
-
+// UPDATED: Collection with products query - added published filter
 const GET_COLLECTION_WITH_PRODUCTS_QUERY = `
   query getCollectionWithProducts($handle: String!) {
     collection(handle: $handle) {
@@ -130,7 +125,7 @@ const GET_COLLECTION_WITH_PRODUCTS_QUERY = `
         width
         height
       }
-      products(first: 100) {
+      products(first: 100, filters: {available: true}) {
         edges {
           node {
             id
@@ -233,8 +228,7 @@ const GET_COLLECTION_WITH_PRODUCTS_QUERY = `
   }
 `;
 
-//*========================== GRAPHQL QUERY - GET PRODUCT  BY HANDLE ==================================
-
+// UPDATED: Get product by handle (individual products are automatically filtered by Storefront API)
 const GET_PRODUCT_BY_HANDLE_QUERY = `
   query getProductByHandle($handle: String!) {
     product(handle: $handle) {
@@ -330,8 +324,7 @@ const GET_PRODUCT_BY_HANDLE_QUERY = `
   }
 `;
 
-//*========================== GRAPHQL QUERY - GET COLLECTION INFO  ==================================
-
+// Collection info query (unchanged - collections are always published if accessible)
 const GET_COLLECTION_INFO_QUERY = `
   query getCollectionInfo($handle: String!) {
     collection(handle: $handle) {
@@ -356,11 +349,10 @@ const GET_COLLECTION_INFO_QUERY = `
   }
 `;
 
-//*========================== GRAPHQL QUERY - GET BEST SELLING PRODUCTS  ==================================
-
+// UPDATED: Best selling products with published filter
 const GET_BEST_SELLING_PRODUCTS_QUERY = `
   query getBestSellingProducts($first: Int!) {
-    products(first: $first, sortKey: BEST_SELLING) {
+    products(first: $first, sortKey: BEST_SELLING, query: "published_status:published") {
       edges {
         node {
           id
@@ -454,12 +446,10 @@ const GET_BEST_SELLING_PRODUCTS_QUERY = `
   }
 `;
 
-//*========================== GRAPHQL QUERY - GET LATEST PRODUCTS  ==================================
-
-
+// UPDATED: Latest products with published filter
 const GET_LATEST_PRODUCTS_QUERY = `
   query getLatestProducts($first: Int!) {
-    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+    products(first: $first, sortKey: CREATED_AT, reverse: true, query: "published_status:published") {
       edges {
         node {
           id
@@ -553,8 +543,7 @@ const GET_LATEST_PRODUCTS_QUERY = `
   }
 `;
 
-
-//*========================== API FUNCTIONS ==================================
+// API FUNCTIONS (unchanged - the filtering happens in queries)
 
 // GetCollections
 export async function getCollections(): Promise<SimpleCollection[]> {
@@ -569,7 +558,7 @@ export async function getCollections(): Promise<SimpleCollection[]> {
       handle: edge.node.handle,
       description: edge.node.description,
       image: edge.node.image,
-      products: [], // Collections endpoint doesn't include products
+      products: [],
     }));
   } catch (error) {
     console.error("Error fetching collections:", error);
@@ -599,6 +588,7 @@ export async function getProductsByCollection(
     throw new Error(`Failed to fetch products for collection "${handle}"`);
   }
 }
+
 // Get product by handle
 export async function getProductByHandle(
   handle: string
@@ -620,7 +610,6 @@ export async function getProductByHandle(
 }
 
 // Get collection info
-
 export async function getCollectionInfo(
   handle: string
 ): Promise<Omit<SimpleCollection, "products">> {
@@ -646,6 +635,7 @@ export async function getCollectionInfo(
     throw new Error(`Failed to fetch collection info "${handle}"`);
   }
 }
+
 // Get best selling products
 export async function getBestSellingProducts(first: number = 20): Promise<SimpleProduct[]> {
   try {

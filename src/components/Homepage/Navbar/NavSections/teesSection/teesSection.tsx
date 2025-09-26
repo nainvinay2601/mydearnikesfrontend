@@ -3,11 +3,11 @@ import Link from "next/link";
 
 const TeesComponent = () => {
   const teeCategories = [
-    { name: "All Tees", href: "/category/tees", isActive: true },
-    { name: "Oversized Tees", href: "/category/oversized-unisex-tees" },
+
+    { name: "Oversized Tees", href: "/category/oversized-unisex-tees", isActive:true },
     { name: "Fitted Tees", href: "/category/regular-fits" },
     { name: "Baby Tees", href: "/category/baby-tees" },
-    { name: "Blanks", href: "/category/blanks" },
+    { name: "Hoodies", href: "/category/hoodies" },
   ];
 
   return (

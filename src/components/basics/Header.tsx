@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -15,29 +14,37 @@ import CartDrawer from "../cart/SlideOutDrawer";
 
 const Header = () => {
   const router = useRouter();
-  
+
   // 1️⃣ single state: null (closed) or section name
   const [active, setActive] = useState<
-    null | "tees" | "bottoms" | "accessories" | "newin" | "search"
+    null | "tees" | "bottoms" | "all" | "newin" | "search"
   >(null);
 
   const { totalItems } = useCartStore();
   const [cartOpen, setCartOpen] = useState(false);
-  
+
   const openCart = () => setCartOpen(true);
   const closeCart = () => setCartOpen(false);
-  
+
   // 2️⃣ open/close menu, default to Tees
   const toggle = () => setActive((prev) => (prev ? null : "tees"));
 
   // Handle navigation
-  const handleNavigation = (key: string, href?: string) => {
-    if (href) {
-      // Close menu and navigate
+  // Handle navigation
+  const handleNavigation = (key: string) => {
+    if (key === "all") {
+      // Close menu and navigate to All Products page
       setActive(null);
-      // router.push(href);
+      router.push("/category/all-products");
+    } else if (key === "newin") {
+      // Close menu and navigate to New In page
+      setActive(null);
+      router.push("/category/new-arrivals");
+    } else if (key === "search") {
+      // Show search component
+      setActive("search" as any);
     } else {
-      // Show component (like search)
+      // Show other components (tees, bottoms, etc.)
       setActive(key as any);
     }
   };
@@ -57,14 +64,17 @@ const Header = () => {
             {active ? "Close" : "Menu"}
           </Button>
 
-          <div className="logo font-ispire text-3xl cursor-pointer" onClick={() => router.push('/')}>
+          <div
+            className="logo font-ispire text-3xl cursor-pointer"
+            onClick={() => router.push("/")}
+          >
             MYDEARNIKES
           </div>
 
           {/* Cart button with visual counter */}
-          <Button 
-            variant="outline" 
-            className="rounded-full relative min-w-[60px] transition-all duration-200" 
+          <Button
+            variant="outline"
+            className="rounded-full relative min-w-[60px] transition-all duration-200"
             onClick={openCart}
           >
             {totalItems > 0 ? (
@@ -85,12 +95,16 @@ const Header = () => {
           <div className="absolute top-full left-0 right-0  ">
             <nav className="bg-white flex items-center overflow-x-auto gap-2 scrollbar-hide px-[8px] py-[16px] border-b-[0.5px] border-[#aeadad]">
               {[
-                { key: "newin", label: "New In", href: "/category/new-arrivals" },
-                { key: "tees", label: "Tees", href: "/category/tees" },
-                { key: "bottoms", label: "Bottoms", href: "/category/bottoms" },
-                { key: "accessories", label: "Accessories", href: "/category/accessories" },
+                { key: "all", label: "All Products", href: "/category/all" },
+                {
+                  key: "newin",
+                  label: "New In",
+                  href: "/category/new-arrivals",
+                },
+                { key: "tees", label: "Tees" }, // No href = show component
+                { key: "bottoms", label: "Bottoms" }, // No href = show component
                 { key: "search", label: "Search" }, // No href = show component
-              ].map(({ key, label }) => (
+              ].map(({ key, label, href }) => (
                 <Button
                   key={key}
                   variant="outline"
@@ -98,7 +112,7 @@ const Header = () => {
                   className={`rounded-full px-3 text-sm border-b-[0.5px] border-[#aeadad] hover:bg-gray-100 transition-colors ${
                     active === key ? "bg-black text-white hover:bg-black" : ""
                   }`}
-                  onClick={() => handleNavigation(key)}
+                  onClick={() => handleNavigation(key, href)}
                 >
                   {label}
                 </Button>
@@ -109,7 +123,7 @@ const Header = () => {
             {active === "tees" && <TeesComponent />}
             {active === "newin" && <NewInComponent />}
             {active === "bottoms" && <BottomComponent />}
-            {active === "accessories" && <AccessoriesComponent />}
+            {/* {active === "all" && <AccessoriesComponent />} */}
             {active === "search" && <SearchComponent />}
 
             {/* Help Bar */}
