@@ -1,4 +1,4 @@
-
+import { CartItem } from "@/store/cartStore";
 const SHOPIFY_STOREFRONT_URL = `https://mydearnikes.myshopify.com/api/2024-07/graphql.json`;
 const STOREFRONT_ACCESS_TOKEN =
   process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
@@ -44,7 +44,7 @@ const CART_CREATE_MUTATION = `
 `;
 
 // Make GraphQL request
-async function makeGraphQLRequest(query: string, variables: any = {}) {
+async function makeGraphQLRequest(query: string, variables: unknown = {}) {
   try {
     console.log("Making GraphQL request to:", SHOPIFY_STOREFRONT_URL);
     console.log("Variables:", variables);
@@ -143,7 +143,7 @@ export const createCartCheckout = async (
 };
 
 // Create cart with multiple items (for full cart checkout)
-export const createCartWithItems = async (cartItems: any[]) => {
+export const createCartWithItems = async (cartItems: CartItem[]) => {
   try {
     console.log("Creating cart with multiple items:", cartItems);
 

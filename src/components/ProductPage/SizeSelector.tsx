@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { Button } from "../ui/button";
 import { RulerDimensionLine } from "lucide-react";
 import { SimpleProduct, ProductVariant } from "@/types/shopify";

@@ -6,19 +6,19 @@ import SearchComponent from "../Homepage/Navbar/SearchComponent/SearchComp";
 import TeesComponent from "../Homepage/Navbar/NavSections/teesSection/teesSection";
 import NewInComponent from "../Homepage/Navbar/NavSections/newinSection/newInSection";
 import BottomComponent from "../Homepage/Navbar/NavSections/bottomSection/bottomSection";
-import AccessoriesComponent from "../Homepage/Navbar/NavSections/accessoriesSection/accessoriesSection";
+// import AccessoriesComponent from "../Homepage/Navbar/NavSections/accessoriesSection/accessoriesSection";
 import HelpBar from "../Homepage/Navbar/NavSections/helpBar/HelpBar";
 
 import { useCartStore } from "@/store/cartStore";
 import CartDrawer from "../cart/SlideOutDrawer";
 
+type ActiveState = null | "tees" | "bottoms" | "all" | "newin" | "search";
+
 const Header = () => {
   const router = useRouter();
 
   // 1️⃣ single state: null (closed) or section name
-  const [active, setActive] = useState<
-    null | "tees" | "bottoms" | "all" | "newin" | "search"
-  >(null);
+   const [active, setActive] = useState<ActiveState>(null);
 
   const { totalItems } = useCartStore();
   const [cartOpen, setCartOpen] = useState(false);
@@ -31,21 +31,41 @@ const Header = () => {
 
   // Handle navigation
   // Handle navigation
-  const handleNavigation = (key: string) => {
+  // const handleNavigation = (key: string) => {
+  //   if (key === "all") {
+  //     // Close menu and navigate to All Products page
+  //     setActive(null);
+  //     router.push("/category/all-products");
+  //   } else if (key === "newin") {
+  //     // Close menu and navigate to New In page
+  //     setActive(null);
+  //     router.push("/category/new-arrivals");
+  //   } else if (key === "search") {
+  //     // Show search component
+  //     setActive("search" as any);
+  //   } else {
+  //     // Show other components (tees, bottoms, etc.)
+  //     setActive(key as any);
+  //   }
+  // };
+
+  const handleNavigation = (key: string, href?: string) => {
     if (key === "all") {
-      // Close menu and navigate to All Products page
       setActive(null);
       router.push("/category/all-products");
     } else if (key === "newin") {
-      // Close menu and navigate to New In page
       setActive(null);
       router.push("/category/new-arrivals");
     } else if (key === "search") {
-      // Show search component
-      setActive("search" as any);
+      setActive("search");
     } else {
-      // Show other components (tees, bottoms, etc.)
-      setActive(key as any);
+      // Type guard to ensure key is valid ActiveState
+      const validKeys: ActiveState[] = ["tees", "bottoms", "all", "newin", "search"];
+      if (validKeys.includes(key as ActiveState)) {
+        setActive(key as ActiveState);
+      } else {
+        setActive(null);
+      }
     }
   };
 

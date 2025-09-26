@@ -1,14 +1,14 @@
 import {
   Product,
-  Collection,
+  // Collection,
   SimpleProduct,
   SimpleCollection,
   ShopifyProductResponse,
   ShopifyProductsResponse,
   ShopifyCollectionResponse,
   ShopifyCollectionsResponse,
-  ProductVariables,
-  CollectionVariables,
+  // ProductVariables,
+  // CollectionVariables,
 } from "@/types/shopify";
 
 const endpoint = process.env.NEXT_PUBLIC_SHOPIFY_STORE_URL!;
@@ -21,7 +21,7 @@ async function shopifyFetch<T>({
   variables = {},
 }: {
   query: string;
-  variables?: any;
+  variables?: unknown;
 }): Promise<T> {
   const response = await fetch(endpoint, {
     method: "POST",
@@ -68,18 +68,18 @@ function transformProduct(product: Product): SimpleProduct {
 }
 
 // Helper function to transform shopify collection to simple collection
-function transformCollection(collection: Collection): SimpleCollection {
-  return {
-    id: collection.id,
-    title: collection.title,
-    handle: collection.handle,
-    description: collection.description,
-    image: collection.image,
-    products: collection.products.edges.map((edge) =>
-      transformProduct(edge.node)
-    ),
-  };
-}
+// function transformCollection(collection: Collection): SimpleCollection {
+//   return {
+//     id: collection.id,
+//     title: collection.title,
+//     handle: collection.handle,
+//     description: collection.description,
+//     image: collection.image,
+//     products: collection.products.edges.map((edge) =>
+//       transformProduct(edge.node)
+//     ),
+//   };
+// }
 
 // UPDATED: Collections query (collections are always published if accessible via Storefront API)
 const GET_COLLECTIONS_QUERY = `

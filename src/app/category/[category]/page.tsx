@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import {
   getCollectionInfo,
@@ -6,7 +6,7 @@ import {
 } from "@/lib/shopify/client";
 // import ProductGrid from "@/components/major/newProductCard";
 
-import { SimpleProduct, SimpleCollection } from "@/types/shopify";
+// import { SimpleProduct, SimpleCollection } from "@/types/shopify";
 import Link from "next/link";
 import ProductGrid from "@/components/major/ProductGrid";
 

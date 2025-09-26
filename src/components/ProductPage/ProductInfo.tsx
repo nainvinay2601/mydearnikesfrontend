@@ -1,6 +1,6 @@
 import React from "react";
 import { ShopifyMoney, SimpleProduct, ProductVariant } from "@/types/shopify";
-import { parse } from "path";
+
 
 interface ProductInfoProps {
   product: SimpleProduct;
