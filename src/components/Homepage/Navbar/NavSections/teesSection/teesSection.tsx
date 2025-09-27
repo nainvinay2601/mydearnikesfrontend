@@ -1,10 +1,14 @@
+
 import React from "react";
 import Link from "next/link";
 
-const TeesComponent = () => {
-  const teeCategories = [
+interface TeesComponentProps {
+  onClose: () => void; 
+}
 
-    { name: "Oversized Tees", href: "/category/oversized-unisex-tees", isActive:true },
+const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
+  const teeCategories = [
+    { name: "Oversized Tees", href: "/category/oversized-unisex-tees", isActive: true },
     { name: "Fitted Tees", href: "/category/regular-fits" },
     { name: "Baby Tees", href: "/category/baby-tees" },
     { name: "Hoodies", href: "/category/hoodies" },
@@ -21,6 +25,7 @@ const TeesComponent = () => {
               ? "underline underline-offset-4"
               : "hover:underline hover:underline-offset-4"
           }`}
+          onClick={onClose} 
         >
           {category.name}
         </Link>

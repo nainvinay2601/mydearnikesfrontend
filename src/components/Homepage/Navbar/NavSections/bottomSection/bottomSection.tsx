@@ -1,7 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-const BottomComponent = () => {
+interface BottomComponentProps {
+  onClose: () => void; 
+}
+
+const BottomComponent:React.FC<BottomComponentProps> = ({onClose}) => {
   const bottomCategories = [
     { name: "All Bottoms", href: "/category/all-bottoms", isActive: true },
     { name: "Shorts", href: "/category/shorts" },
@@ -20,6 +24,8 @@ const BottomComponent = () => {
                 ? "underline underline-offset-4" 
                 : "hover:underline hover:underline-offset-4"
             }`}
+
+            onClick={onClose}
           >
             {category.name}
           </Link>
