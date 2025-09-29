@@ -40,7 +40,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             height={400}
             sizes="(max-width: 768px) 50vw, 33vw"
             quality={90}
-            className="object-contain h-[240px] md:h-[320px] lg:h-[530px]"
+            className="object-contain h-[260px] md:h-[320px] lg:h-[530px]"
             priority={Number(product.id) <= 4}
           />
         ) : (
@@ -50,7 +50,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm">
-        <h3 className="font-inter text-xs font-normal">{product.title}</h3>
+        <h3 className="font-inter text-xs font-normal truncate uppercase">{product.title}</h3>
         <p className="font-inter text-xs font-normal tracking-tight">
           {displayPrice}
         </p>

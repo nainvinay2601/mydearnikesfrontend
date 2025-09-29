@@ -6,7 +6,7 @@ const ShopByCategory = () => {
   return (
     <>
       <div className="heading px-[8px] py-4 border-t-[0.5px] border-b-[0.25px] border-[#aeadad]">
-        <h1 className="uppercase text-2xl font-medium">Explore Mydearnikes</h1>
+        <h1 className="uppercase text-2xl font-medium ">Explore Mydearnikes</h1>
       </div>
       {/* Categories */}
       <div className="categoriesSwiper overflow-x-auto w-full">

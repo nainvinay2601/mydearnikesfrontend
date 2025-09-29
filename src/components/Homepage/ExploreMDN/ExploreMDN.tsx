@@ -127,7 +127,7 @@ const ExploreMDN = () => {
             href={`/product/${product.handle}`}
             className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col group cursor-pointer hover:bg-gray-50 transition-colors duration-200"
           >
-            <div className="flex-1 bg-gray-100 flex justify-center items-center p-2 group-hover:bg-gray-200 transition-colors duration-200">
+            <div className="flex-1 bg-gray-100 flex justify-center items-center p-2 group-hover:bg-gray-200 transition-colors duration-200 ">
               {product.featuredImage ? (
                 <Image
                   src={product.featuredImage.url}

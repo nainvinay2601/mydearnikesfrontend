@@ -1,5 +1,6 @@
 import React from "react";
-// import { Button } from "../../ui/button";
+import Link from "next/link";
+
 
 const HeroSection = () => {
   return (
@@ -10,9 +11,11 @@ const HeroSection = () => {
             Graphics for the chronically online{" "}
           </div>
 
-          <button className="font-bebas text-3xl border-1 border-white px-3 pb-2 pt-3 text-white rounded-lg tracking-[0.5px] leading-none flex justify-center items-center hover:bg-black hover:text-white  hover:border-0">
-            Shop Now
-          </button>
+          <Link href="/category/all-products">
+            <button className="font-bebas text-3xl border-1 border-white px-3 pb-2 pt-3 text-white rounded-lg tracking-[0.5px] leading-none flex justify-center items-center hover:bg-black hover:text-white  hover:border-0">
+              Shop Now
+            </button>
+          </Link>
         </div>
       </div>
     </>
