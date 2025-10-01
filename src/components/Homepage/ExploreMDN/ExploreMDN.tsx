@@ -127,16 +127,16 @@ const ExploreMDN = () => {
             href={`/product/${product.handle}`}
             className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col group cursor-pointer hover:bg-gray-50 transition-colors duration-200"
           >
-            <div className="flex-1 bg-gray-100 flex justify-center items-center p-2 group-hover:bg-gray-200 transition-colors duration-200 ">
+            <div className="relative aspect-square bg-gray-100 overflow-hidden group-hover:bg-gray-200 transition-colors duration-200">
               {product.featuredImage ? (
                 <Image
                   src={product.featuredImage.url}
                   alt={product.featuredImage.altText || product.title}
-                  width={400}
-                  height={400}
+                  width={500}
+                  height={500}
                   sizes="(max-width: 768px) 50vw, 33vw"
                   quality={90}
-                  className="object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   priority={index < 6}
                 />
               ) : (

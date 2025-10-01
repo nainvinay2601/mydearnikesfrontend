@@ -5,7 +5,7 @@ import Link from "next/link";
 const HeroSection = () => {
   return (
     <>
-      <div className="bg-[url('/images/heroImg.png')] pt-16 bg-cover bg-center h-[95vh] lg:hidden flex justify-center items-center  ">
+      <div className="bg-[url('/images/heroImageNonBlur.jpg')] pt-16 bg-cover bg-center h-[95vh] lg:hidden flex justify-center items-center  ">
         <div className="buttonBox flex flex-col h-[80vh]  justify-between items-center ">
           <div className="subText text-white border-[#ffffff] uppercase font-normal text-sm border-[0.5px] inline-block px-2 py-1 rounded-full ">
             Graphics for the chronically online{" "}
