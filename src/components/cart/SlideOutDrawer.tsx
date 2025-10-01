@@ -131,9 +131,9 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
 
                       {/* Product Details */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-sm truncate">
+                        <p className="font-medium text-sm truncate ">
                           {item.productTitle}
-                        </h3>
+                        </p>
                         <p className="text-xs text-gray-600 mb-1">
                           {item.variantTitle}
                         </p>
