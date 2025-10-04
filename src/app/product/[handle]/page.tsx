@@ -104,31 +104,68 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="pt-16">
-      <ImageCarousel product={product} />
-      <ProductInfo product={product} selectedVariant={selectedVariant} />
-      <SizeSelector
-        product={product}
-        selectedSize={selectedSize}
-        onSizeChange={setSelectedSize}
-      />
-      <ColorSelector
-        product={product}
-        selectedColor={selectedColor}
-        onColorChange={setSelectedColor}
-      />
-      <ProductQuantity
-        product={product}
-        selectedVariant={selectedVariant}
-        quantity={quantity}
-        setQuantity={setQuantity}
-      />
-      <BuyNow
-        product={product}
-        selectedVariant={selectedVariant}
-        quantity={quantity}
-      />
-      <ProductAccordion product={product} />
+    <div className="pt-15 flex flex-col md:flex-col lg:flex-row justify-between gap-2 ">
+      <div className="lg:w-1/2 md:h-[110vh] lg:h-[90vh] ">
+        <ImageCarousel product={product} />
+      </div>
+
+      <div className="lg:w-1/2 flex flex-col justify-between lg:h-[90vh]">
+        <div className="">
+          <ProductInfo product={product} selectedVariant={selectedVariant} />
+          <div className="lg:hidden">
+            <SizeSelector
+              product={product}
+              selectedSize={selectedSize}
+              onSizeChange={setSelectedSize}
+            />
+            <ColorSelector
+              product={product}
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
+            />
+          </div>
+          <div className="lg:hidden">
+            <ProductQuantity
+              product={product}
+              selectedVariant={selectedVariant}
+              quantity={quantity}
+              setQuantity={setQuantity}
+            />
+            <BuyNow
+              product={product}
+              selectedVariant={selectedVariant}
+              quantity={quantity}
+            />
+          </div>
+
+          <ProductAccordion product={product} />
+        </div>
+
+        <div className="hidden lg:block mb-5">
+          <SizeSelector
+            product={product}
+            selectedSize={selectedSize}
+            onSizeChange={setSelectedSize}
+          />
+          <ColorSelector
+            product={product}
+            selectedColor={selectedColor}
+            onColorChange={setSelectedColor}
+          />
+
+          <ProductQuantity
+            product={product}
+            selectedVariant={selectedVariant}
+            quantity={quantity}
+            setQuantity={setQuantity}
+          />
+          <BuyNow
+            product={product}
+            selectedVariant={selectedVariant}
+            quantity={quantity}
+          />
+        </div>
+      </div>
     </div>
   );
 }

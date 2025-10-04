@@ -379,8 +379,8 @@ const LatestDrop = () => {
 
   return (
     <>
-      <div className="heading px-[8px] py-4">
-        <h1 className="uppercase text-2xl font-bebas font-medium">Latest Drop</h1>
+      <div className="heading px-[8px] py-4 lg:py-8 ">
+        <h1 className="uppercase text-2xl lg:text-4xl  font-bebas font-medium">Latest Drop</h1>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-t-[0.25px] border-[#aeadad]">

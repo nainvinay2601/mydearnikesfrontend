@@ -116,8 +116,8 @@ const ExploreMDN = () => {
 
   return (
     <>
-      <div className="heading px-[8px] py-4">
-        <h1 className="uppercase text-2xl font-medium">Bestsellers</h1>
+      <div className="heading px-[8px] py-4 lg:py-8">
+        <h1 className="uppercase text-2xl lg:text-4xl  font-medium">Bestsellers</h1>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
@@ -181,7 +181,7 @@ const ExploreMDN = () => {
             href="/category/all-products"
             className="bg-black text-white px-8 py-3 text-sm font-medium tracking-tight hover:bg-gray-800 transition-colors duration-200 rounded-none border-none"
           >
-            Explore More Products
+            Explore More 
           </Link>
         </div>
       )}
@@ -190,3 +190,5 @@ const ExploreMDN = () => {
 };
 
 export default ExploreMDN;
+
+

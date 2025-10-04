@@ -1,3 +1,6 @@
+
+
+
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -52,7 +55,7 @@ export default function ImageCarousel({ product }: ImageCarouselProps) {
         modules={[Autoplay]}
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-        className="h-96 w-full rounded-none"
+        className="h-[50vh] w-full md:h-[110vh] lg:h-[90vh] rounded-none"
       >
         {images.map((item, key) => (
           <SwiperSlide key={key}>
@@ -61,7 +64,7 @@ export default function ImageCarousel({ product }: ImageCarouselProps) {
                 src={item.url}
                 alt={item.altText || product.title}
                 fill
-                className="block h-full w-full object-cover relative"
+                className=" h-full w-full object-cover md:object-cover relative"
                 priority={key === 0}
               />
             </div>
