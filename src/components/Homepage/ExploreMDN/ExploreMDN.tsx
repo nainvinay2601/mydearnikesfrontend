@@ -11,14 +11,14 @@ const ExploreMDN = () => {
   const [products, setProducts] = useState<SimpleProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [visibleItems, setVisibleItems] = useState(6); // Start with 6 items
+  const [visibleItems, setVisibleItems] = useState(8); // Start with 6 items
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchBestSellingProducts = async () => {
       try {
         setLoading(true);
-        const bestSellingProducts = await getBestSellingProducts(18); // Only fetch 18 products
+        const bestSellingProducts = await getBestSellingProducts(20); // Only fetch 18 products
         setProducts(bestSellingProducts);
       } catch (err) {
         setError('Failed to fetch best-selling products');
@@ -33,20 +33,20 @@ const ExploreMDN = () => {
 
   // 🔥 Auto-load more products when scrolling near bottom
   const loadMore = useCallback(() => {
-    if (isLoadingMore || visibleItems >= 18) return; // Max 18 items
+    if (isLoadingMore || visibleItems >= 20) return; // Max 20 items
     
     setIsLoadingMore(true);
     
     // Simulate loading delay (remove if not needed)
     setTimeout(() => {
-      setVisibleItems((prev) => Math.min(prev + 6, 18)); // Load 6 more, max 18
+      setVisibleItems((prev) => Math.min(prev + 4, 20)); // Load 6 more, max 20 
       setIsLoadingMore(false);
     }, 500);
   }, [isLoadingMore, visibleItems]);
 
   // 🔥 Intersection Observer to auto-load only when section is visible
   useEffect(() => {
-    if (visibleItems >= 18 || products.length === 0) return;
+    if (visibleItems >= 20 || products.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -81,8 +81,8 @@ const ExploreMDN = () => {
   };
 
   const visibleProducts = products.slice(0, visibleItems);
-  const hasMore = visibleItems < 18 && products.length >= 18; // Check against 18 limit
-  const showExploreButton = visibleItems >= 18; // Show explore button when all 18 are visible
+  const hasMore = visibleItems < 20 && products.length >= 20; // Check against 18 limit
+  const showExploreButton = visibleItems >= 20; // Show explore button when all 18 are visible
 
   if (loading) {
     return (
@@ -120,7 +120,7 @@ const ExploreMDN = () => {
         <h1 className="uppercase text-2xl lg:text-4xl  font-medium">Bestsellers</h1>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
         {visibleProducts.map((product, index) => (
           <Link 
             key={product.id} 
@@ -158,7 +158,7 @@ const ExploreMDN = () => {
       </div>
 
       {/* Loading trigger - always present when more items can be loaded */}
-      {visibleItems < 18 && products.length > visibleItems && (
+      {visibleItems < 20 && products.length > visibleItems && (
         <div 
           id="bestsellers-load-trigger" 
           className="h-20 flex items-center justify-center"

@@ -1,14 +1,13 @@
-
 import React from "react";
 import Link from "next/link";
 
 interface TeesComponentProps {
-  onClose: () => void; 
+  onClose: () => void;
 }
 
 const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
   const teeCategories = [
-    { name: "Oversized Tees", href: "/category/oversized-unisex-tees", isActive: true },
+    { name: "Oversized Tees", href: "/category/oversized-unisex-tees" },
     { name: "Fitted Tees", href: "/category/regular-fits" },
     { name: "Baby Tees", href: "/category/baby-tees" },
     { name: "Hoodies", href: "/category/hoodies" },
@@ -20,12 +19,9 @@ const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
         <Link
           key={index}
           href={category.href}
-          className={`text-xl font-semibold tracking-tight transition-colors hover:text-gray-600 ${
-            category.isActive
-              ? "underline underline-offset-4"
-              : "hover:underline hover:underline-offset-4"
-          }`}
-          onClick={onClose} 
+          className={`text-xl font-semibold tracking-tight transition-colors hover:text-gray-600 hover:underline hover:underline-offset-4`}
+        
+          onClick={onClose}
         >
           {category.name}
         </Link>
