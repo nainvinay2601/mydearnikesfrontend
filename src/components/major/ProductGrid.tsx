@@ -88,7 +88,7 @@ export default function ProductGrid({
               {/* <span className="text-sm text-gray-600">Loading more products...</span> */}
             </div>
           ) : (
-            <div className="text-sm text-gray-400">Scroll to load more...</div>
+            <div className="text-sm text-gray-400">Scroll to load more....</div>
           )}
         </div>
       )}
