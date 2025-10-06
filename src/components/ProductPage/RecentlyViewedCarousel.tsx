@@ -1,16 +1,19 @@
-
-
 import { SimpleProduct } from "@/types/shopify";
 import Image from "next/image";
 import Link from "next/link";
 
-interface ProductCarouselProps {
+interface RecentlyViewedCarouselProps {
   products: SimpleProduct[];
   title?: string;
+  minItems?: number;
 }
 
-export default function ProductCarousel({ products, title = "You May Also Like" }: ProductCarouselProps) {
-  if (products.length === 0) return null;
+export default function RecentlyViewedCarousel({ 
+  products, 
+  title = "Recently Viewed",
+  minItems = 2 // Only show if at least 2 products
+}: RecentlyViewedCarouselProps) {
+  if (products.length < minItems) return null;
 
   const formatPrice = (amount: string, currencyCode: string) => {
     const price = parseFloat(amount);
@@ -21,7 +24,7 @@ export default function ProductCarousel({ products, title = "You May Also Like" 
   };
 
   return (
-    <div className="mt-5 w-full mx-[8px] lg:mx-[8px]">
+    <div className="mt-8 w-full mx-[8px] lg:mx-[8px]">
       <h2 className="text-[36px] lg:text-[48px] font-bold">{title}</h2>
       
       {/* Prevent body scroll with max-w-full and overflow containment */}

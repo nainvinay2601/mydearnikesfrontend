@@ -1,9 +1,8 @@
+  
+
 "use client";
 import { notFound } from "next/navigation";
-
-// import { Metadata } from "next";
 import { getProductByHandle, getRandomProducts } from "@/lib/shopify/client";
-
 import { SimpleProduct, ProductVariant } from "@/types/shopify";
 import ImageCarousel from "@/components/ProductPage/ImageCarousel";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
@@ -12,9 +11,15 @@ import ColorSelector from "@/components/ProductPage/ColorSelector";
 import ProductQuantity from "@/components/ProductPage/ProductQuantity";
 import ProductAccordion from "@/components/ProductPage/ProductAccordion";
 import BuyNow from "@/components/ProductPage/BuyNow";
-import { useEffect, useState } from "react";
-import ProductCard from "@/components/major/ProductCard";
 import ProductCarousel from "@/components/ProductPage/ProductCarousel";
+import { useEffect, useState, useCallback } from "react";
+import { 
+  addRecentlyViewed, 
+  getRecentlyViewedExcluding, 
+  RecentProduct,
+  convertRecentToSimpleProduct 
+} from "@/lib/shopify/recentlyViewed";
+import RecentlyViewedCarousel from "@/components/ProductPage/RecentlyViewedCarousel";
 
 interface ProductPageProps {
   params: Promise<{
@@ -27,28 +32,47 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null
-  );
-
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [quantity, setQuantity] = useState(1);
-
   const [relatedProducts, setRelatedProducts] = useState<SimpleProduct[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<SimpleProduct[]>([]);
 
-  // Fetch products
+  // Memoized function to find matching variant
+  const findMatchingVariant = useCallback((product: SimpleProduct, size: string, color: string) => {
+    if (!product.variants) return null;
+
+    return product.variants.find((variant) => {
+      const variantSize = variant.selectedOptions?.find((opt) =>
+        opt.name.toLowerCase().includes("size")
+      )?.value;
+
+      const variantColor = variant.selectedOptions?.find((opt) =>
+        opt.name.toLowerCase().includes("color")
+      )?.value;
+
+      const sizeMatches = !size || variantSize === size;
+      const colorMatches = !color || variantColor === color;
+
+      return sizeMatches && colorMatches;
+    }) || null;
+  }, []);
+
+  // Fetch product
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const resolvedParams = await params;
         const productData = await getProductByHandle(resolvedParams.handle);
+        
         if (!productData) {
           notFound();
           return;
         }
 
         setProduct(productData);
-        // auto select the first available variant if only one variant
-        if (productData.variants && productData.variants.length === 1) {
+        
+        // Auto select the first available variant
+        if (productData.variants && productData.variants.length > 0) {
           const variant = productData.variants[0];
           setSelectedVariant(variant);
 
@@ -63,56 +87,73 @@ export default function ProductPage({ params }: ProductPageProps) {
           if (colorOption) setSelectedColor(colorOption.value);
         }
       } catch (error) {
-        console.error("Error loading products:", error);
+        console.error("Error loading product:", error);
         notFound();
       } finally {
         setLoading(false);
       }
     };
+    
     fetchProduct();
   }, [params]);
 
-  // find matching variants when  size/color changes
-  useEffect(() => {
-    if (!product || !product.variants) return;
-
-    const matchingVariant = product.variants.find((variant) => {
-      const variantSize = variant.selectedOptions?.find((opt) =>
-        opt.name.toLowerCase().includes("size")
-      )?.value;
-
-      const variantColor = variant.selectedOptions?.find((opt) =>
-        opt.name.toLowerCase().includes("color")
-      )?.value;
-
-      const sizeMatches = !selectedSize || variantSize === selectedSize;
-      const colorMatches = !selectedColor || variantColor === selectedColor;
-
-      return sizeMatches && colorMatches;
-    });
-
-    setSelectedVariant(matchingVariant || null);
-  }, [selectedSize, selectedColor, product]);
-
-  // Fetch random products
+  // Track recently viewed and fetch related products
   useEffect(() => {
     if (!product) return;
+    
+    // Add to recently viewed
+    const recentProduct: RecentProduct = {
+      id: product.id,
+      handle: product.handle,
+      title: product.title,
+      price: product.price,
+      featuredImage: product.featuredImage,
+      viewedAt: Date.now()
+    };
+    
+    addRecentlyViewed(recentProduct);
+    
+    // Get recently viewed (excluding current) and convert to SimpleProduct
+    const recent = getRecentlyViewedExcluding(product.id)
+      .map(convertRecentToSimpleProduct);
+    
+    setRecentlyViewed(recent);
+    
+    // Fetch random products for "You May Also Like"
     const fetchRandomProducts = async () => {
       try {
         const random = await getRandomProducts(product.id, 8);
         setRelatedProducts(random);
       } catch (error) {
-        console.error("Error Fetching  random product:", error);
+        console.error("Error fetching random products:", error);
       }
     };
+    
     fetchRandomProducts();
+  }, [product]);
+
+  // Find matching variants when size/color changes
+  useEffect(() => {
+    if (!product) return;
+    
+    const matchingVariant = findMatchingVariant(product, selectedSize, selectedColor);
+    setSelectedVariant(matchingVariant);
+  }, [selectedSize, selectedColor, product, findMatchingVariant]);
+
+  // Reset selections when product changes
+  useEffect(() => {
+    if (product) {
+      setSelectedSize("");
+      setSelectedColor("");
+      setSelectedVariant(null);
+      setQuantity(1);
+    }
   }, [product]);
 
   if (loading) {
     return (
-      <div className="pt-16 flex justify-between items-center  h-96">
-        {" "}
-        Loading ...{" "}
+      <div className="pt-16 flex justify-center items-center h-96">
+        <div className="animate-pulse text-lg">Loading product...</div>
       </div>
     );
   }
@@ -123,15 +164,17 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <div className="pt-15 flex flex-col md:flex-col lg:flex-row justify-between gap-2 ">
-        <div className="lg:w-1/2 md:h-[110vh] lg:h-[90vh] ">
+      <div className="pt-15 flex flex-col md:flex-col lg:flex-row justify-between gap-2">
+        <div className="lg:w-1/2 md:h-[110vh] lg:h-[90vh]">
           <ImageCarousel product={product} />
         </div>
 
         <div className="lg:w-1/2 flex flex-col justify-between lg:h-[90vh]">
           <div className="">
             <ProductInfo product={product} selectedVariant={selectedVariant} />
-            <div className="lg:hidden">
+            
+            {/* Mobile selectors and actions */}
+            <div className="lg:hidden space-y-4">
               <SizeSelector
                 product={product}
                 selectedSize={selectedSize}
@@ -142,8 +185,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                 selectedColor={selectedColor}
                 onColorChange={setSelectedColor}
               />
-            </div>
-            <div className="lg:hidden">
               <ProductQuantity
                 product={product}
                 selectedVariant={selectedVariant}
@@ -157,12 +198,11 @@ export default function ProductPage({ params }: ProductPageProps) {
               />
             </div>
 
-            {/* <ProductAccordion product={product} />
-             */}
-             <ProductAccordion product={product} relatedProducts={relatedProducts} />
+            <ProductAccordion product={product} />
           </div>
 
-          <div className="hidden lg:block ">
+          {/* Desktop selectors and actions */}
+          <div className="hidden lg:block mb-5 space-y-4">
             <SizeSelector
               product={product}
               selectedSize={selectedSize}
@@ -173,7 +213,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               selectedColor={selectedColor}
               onColorChange={setSelectedColor}
             />
-
             <ProductQuantity
               product={product}
               selectedVariant={selectedVariant}
@@ -188,10 +227,24 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </div>
-              <div className="hidden lg:block mt-4">
 
-      <ProductCarousel products={relatedProducts} title="You May Also Like" />
-              </div>
+      {/* Product carousels */}
+      <div className="mb-4">
+        {relatedProducts.length > 0 && (
+          <ProductCarousel 
+            products={relatedProducts} 
+            title="You May Also Like" 
+          />
+        )}
+        
+        {recentlyViewed.length > 0 && (
+          <RecentlyViewedCarousel 
+            products={recentlyViewed} 
+            title="Recently Viewed" 
+            minItems={2}
+          />
+        )}
+      </div>
     </>
   );
 }
