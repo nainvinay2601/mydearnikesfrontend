@@ -1,9 +1,9 @@
-
 "use client";
 import { notFound } from "next/navigation";
 
 // import { Metadata } from "next";
-import { getProductByHandle } from "@/lib/shopify/client";
+import { getProductByHandle, getRandomProducts } from "@/lib/shopify/client";
+
 import { SimpleProduct, ProductVariant } from "@/types/shopify";
 import ImageCarousel from "@/components/ProductPage/ImageCarousel";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
@@ -13,6 +13,8 @@ import ProductQuantity from "@/components/ProductPage/ProductQuantity";
 import ProductAccordion from "@/components/ProductPage/ProductAccordion";
 import BuyNow from "@/components/ProductPage/BuyNow";
 import { useEffect, useState } from "react";
+import ProductCard from "@/components/major/ProductCard";
+import ProductCarousel from "@/components/ProductPage/ProductCarousel";
 
 interface ProductPageProps {
   params: Promise<{
@@ -30,6 +32,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   );
 
   const [quantity, setQuantity] = useState(1);
+
+  const [relatedProducts, setRelatedProducts] = useState<SimpleProduct[]>([]);
 
   // Fetch products
   useEffect(() => {
@@ -90,6 +94,20 @@ export default function ProductPage({ params }: ProductPageProps) {
     setSelectedVariant(matchingVariant || null);
   }, [selectedSize, selectedColor, product]);
 
+  // Fetch random products
+  useEffect(() => {
+    if (!product) return;
+    const fetchRandomProducts = async () => {
+      try {
+        const random = await getRandomProducts(product.id, 8);
+        setRelatedProducts(random);
+      } catch (error) {
+        console.error("Error Fetching  random product:", error);
+      }
+    };
+    fetchRandomProducts();
+  }, [product]);
+
   if (loading) {
     return (
       <div className="pt-16 flex justify-between items-center  h-96">
@@ -104,15 +122,47 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="pt-15 flex flex-col md:flex-col lg:flex-row justify-between gap-2 ">
-      <div className="lg:w-1/2 md:h-[110vh] lg:h-[90vh] ">
-        <ImageCarousel product={product} />
-      </div>
+    <>
+      <div className="pt-15 flex flex-col md:flex-col lg:flex-row justify-between gap-2 ">
+        <div className="lg:w-1/2 md:h-[110vh] lg:h-[90vh] ">
+          <ImageCarousel product={product} />
+        </div>
 
-      <div className="lg:w-1/2 flex flex-col justify-between lg:h-[90vh]">
-        <div className="">
-          <ProductInfo product={product} selectedVariant={selectedVariant} />
-          <div className="lg:hidden">
+        <div className="lg:w-1/2 flex flex-col justify-between lg:h-[90vh]">
+          <div className="">
+            <ProductInfo product={product} selectedVariant={selectedVariant} />
+            <div className="lg:hidden">
+              <SizeSelector
+                product={product}
+                selectedSize={selectedSize}
+                onSizeChange={setSelectedSize}
+              />
+              <ColorSelector
+                product={product}
+                selectedColor={selectedColor}
+                onColorChange={setSelectedColor}
+              />
+            </div>
+            <div className="lg:hidden">
+              <ProductQuantity
+                product={product}
+                selectedVariant={selectedVariant}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
+              <BuyNow
+                product={product}
+                selectedVariant={selectedVariant}
+                quantity={quantity}
+              />
+            </div>
+
+            {/* <ProductAccordion product={product} />
+             */}
+             <ProductAccordion product={product} relatedProducts={relatedProducts} />
+          </div>
+
+          <div className="hidden lg:block ">
             <SizeSelector
               product={product}
               selectedSize={selectedSize}
@@ -123,8 +173,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               selectedColor={selectedColor}
               onColorChange={setSelectedColor}
             />
-          </div>
-          <div className="lg:hidden">
+
             <ProductQuantity
               product={product}
               selectedVariant={selectedVariant}
@@ -137,35 +186,12 @@ export default function ProductPage({ params }: ProductPageProps) {
               quantity={quantity}
             />
           </div>
-
-          <ProductAccordion product={product} />
-        </div>
-
-        <div className="hidden lg:block mb-5">
-          <SizeSelector
-            product={product}
-            selectedSize={selectedSize}
-            onSizeChange={setSelectedSize}
-          />
-          <ColorSelector
-            product={product}
-            selectedColor={selectedColor}
-            onColorChange={setSelectedColor}
-          />
-
-          <ProductQuantity
-            product={product}
-            selectedVariant={selectedVariant}
-            quantity={quantity}
-            setQuantity={setQuantity}
-          />
-          <BuyNow
-            product={product}
-            selectedVariant={selectedVariant}
-            quantity={quantity}
-          />
         </div>
       </div>
-    </div>
+              <div className="hidden lg:block mt-4">
+
+      <ProductCarousel products={relatedProducts} title="You May Also Like" />
+              </div>
+    </>
   );
 }

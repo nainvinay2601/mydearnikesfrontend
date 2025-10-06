@@ -637,7 +637,9 @@ export async function getCollectionInfo(
 }
 
 // Get best selling products
-export async function getBestSellingProducts(first: number = 20): Promise<SimpleProduct[]> {
+export async function getBestSellingProducts(
+  first: number = 20
+): Promise<SimpleProduct[]> {
   try {
     const response = await shopifyFetch<ShopifyProductsResponse>({
       query: GET_BEST_SELLING_PRODUCTS_QUERY,
@@ -652,7 +654,9 @@ export async function getBestSellingProducts(first: number = 20): Promise<Simple
 }
 
 // Get Latest Products
-export async function getLatestProducts(first: number = 4): Promise<SimpleProduct[]> {
+export async function getLatestProducts(
+  first: number = 4
+): Promise<SimpleProduct[]> {
   try {
     const response = await shopifyFetch<ShopifyProductsResponse>({
       query: GET_LATEST_PRODUCTS_QUERY,
@@ -663,5 +667,42 @@ export async function getLatestProducts(first: number = 4): Promise<SimpleProduc
   } catch (error) {
     console.error("Error fetching latest products:", error);
     throw new Error("Failed to fetch latest products");
+  }
+}
+
+// GET LATEST PRODUCT - except the current
+
+export async function getRandomProducts(
+  excludeProductId: string,
+  count: number = 8
+): Promise<SimpleProduct[]> {
+  try {
+    // Fetch more products than needed so we can randomize and exclude current
+    const response = await shopifyFetch<ShopifyProductsResponse>({
+      query: GET_BEST_SELLING_PRODUCTS_QUERY, // Reuse existing query
+      variables: { first: 50 }, // Fetch 50 to have good variety
+    });
+
+    const allProducts = response.products.edges.map((edge) =>
+      transformProduct(edge.node)
+    );
+
+    // Filter out current product
+    const filteredProducts = allProducts.filter(
+      (p) => p.id !== excludeProductId
+    );
+
+    // Shuffle array (Fisher-Yates algorithm)
+    const shuffled = [...filteredProducts];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Return requested count
+    return shuffled.slice(0, count);
+  } catch (error) {
+    console.error("Error fetching random products:", error);
+    return [];
   }
 }
