@@ -188,3 +188,8 @@ export interface ProductsVariables {
   sortKey?: 'CREATED_AT' | 'UPDATED_AT' | 'PRICE' | 'BEST_SELLING';
   reverse?: boolean;
 }
+
+export interface SearchProductsVariables {
+  query: string;
+  first?: number;
+}

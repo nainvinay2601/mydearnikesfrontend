@@ -706,3 +706,70 @@ export async function getRandomProducts(
     return [];
   }
 }
+
+// Search query and function 
+const SEARCH_PRODUCTS_QUERY = `
+  query searchProducts($query: String!, $first: Int!) {
+    products(first: $first, query: $query) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          availableForSale
+          featuredImage {
+            id
+            url
+            altText
+            width
+            height
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          compareAtPriceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+export async function searchProducts(query: string, first: number = 10): Promise<SimpleProduct[]> {
+  try {
+    const response = await shopifyFetch<ShopifyProductsResponse>({
+      query: SEARCH_PRODUCTS_QUERY,
+      variables: { query, first },
+    });
+
+    return response.products.edges.map((edge) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      handle: edge.node.handle,
+      description: edge.node.description,
+      images: edge.node.featuredImage ? [edge.node.featuredImage] : [],
+      variants: [],
+      price: edge.node.priceRange.minVariantPrice,
+      compareAtPrice: edge.node.compareAtPriceRange.minVariantPrice.amount !== "0.0" 
+        ? edge.node.compareAtPriceRange.minVariantPrice 
+        : undefined,
+      availableForSale: edge.node.availableForSale,
+      tags: [],
+      productType: '',
+      vendor: '',
+      featuredImage: edge.node.featuredImage,
+    }));
+  } catch (error) {
+    console.error("Error searching products:", error);
+    throw new Error("Failed to search products");
+  }
+}
