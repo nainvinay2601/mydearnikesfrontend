@@ -202,7 +202,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Desktop selectors and actions */}
-          <div className="hidden lg:block mb-5 space-y-4">
+          <div className="hidden lg:block">
             <SizeSelector
               product={product}
               selectedSize={selectedSize}
