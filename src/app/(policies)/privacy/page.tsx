@@ -6,14 +6,16 @@ export default function PrivacyPolicy() {
 
       <section className="mb-6 mt-[32px]">
         <p className="text-gray-700 mb-4 text-sm">
-          This Privacy Policy describes how MYDEARNIKES (the "Site", "we", "us",
-          or "our") collects, uses, and discloses your personal information when
-          you visit, use our services, or make a purchase from mydearnikes.com
-          (the "Site") or otherwise communicate with us regarding the Site
-          (collectively, the "Services"). For purposes of this Privacy Policy,
-          "you" and "your" means you as the user of the Services, whether you
-          are a customer, website visitor, or another individual whose
-          information we have collected pursuant to this Privacy Policy.
+          This Privacy Policy describes how MYDEARNIKES (the &quot;Site&quot;,
+          &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) collects, uses,
+          and discloses your personal information when you visit, use our
+          services, or make a purchase from mydearnikes.com (the
+          &quot;Site&quot;) or otherwise communicate with us regarding the Site
+          (collectively, the &quot;Services&quot;). For purposes of this Privacy
+          Policy, &quot;you&quot; and &quot;your&quot; means you as the user of
+          the Services, whether you are a customer, website visitor, or another
+          individual whose information we have collected pursuant to this
+          Privacy Policy.
         </p>
         <span className="text-sm text-gray-700 ">
           **Please read this Privacy Policy carefully.
@@ -28,8 +30,8 @@ export default function PrivacyPolicy() {
           We may update this Privacy Policy from time to time, including to
           reflect changes to our practices or for other operational, legal, or
           regulatory reasons. We will post the revised Privacy Policy on the
-          Site, update the "Last updated" date and take any other steps required
-          by applicable law.
+          Site, update the &quot;Last updated&quot; date and take any other
+          steps required by applicable law.
         </p>
       </section>
       {/* How we collect and use your information   */}
@@ -60,7 +62,7 @@ export default function PrivacyPolicy() {
         <p className="text-gray-700 mb-4 text-sm">
           The types of personal information we obtain about you depends on how
           you interact with our Site and use our Services. When we use the term
-          "personal information", we are referring to information that
+          &quot;personal information&quot;, we are referring to information that
           identifies, relates to, describes or can be associated with you. The
           following sections describe the categories and specific types of
           personal information we collect.
@@ -113,12 +115,13 @@ export default function PrivacyPolicy() {
 
         <p className="text-gray-700 mb-4 text-sm">
           We may also automatically collect certain information about your
-          interaction with the Services ("Usage Data"). To do this, we may use
-          cookies, pixels and similar technologies ("Cookies"). Usage Data may
-          include information about how you access and use our Site and your
-          account, including device information, browser information,
-          information about your network connection, your IP address and other
-          information regarding your interaction with the Services.
+          interaction with the Services (&quot;Usage Data&quot;). To do this, we
+          may use cookies, pixels and similar technologies
+          (&quot;Cookies&quot;). Usage Data may include information about how
+          you access and use our Site and your account, including device
+          information, browser information, information about your network
+          connection, your IP address and other information regarding your
+          interaction with the Services.
         </p>
       </section>
 
@@ -223,7 +226,7 @@ export default function PrivacyPolicy() {
             href="https://www.shopify.com/legal/cookies"
             className="text-blue-500"
           >
-            Shopify's Cookie Policy
+            Shopify&apos;s Cookie Policy
           </a>
           . We use Cookies to power and improve our Site and our Services
           (including to remember your actions and preferences), to run analytics
@@ -309,8 +312,9 @@ export default function PrivacyPolicy() {
         <p className="text-gray-700 mb-4 text-sm">
           We have in the past 12 months disclosed the following categories of
           personal information and sensitive personal information about users
-          for the purposes set out above in "How we Collect and Use your
-          Personal Information" and "How we Disclose Personal Information":
+          for the purposes set out above in &quot;How we Collect and Use your
+          Personal Information&quot; and &quot;How we Disclose Personal
+          Information&quot;:
         </p>
 
         <table className="w-full text-sm text-left text-gray-500 mb-4">
@@ -462,7 +466,9 @@ export default function PrivacyPolicy() {
       </section>
       {/* children's data */}
       <section className="mb-6">
-        <h2 className="text-[36px] leading-9 mb-3 mt-8">Children's Data</h2>
+        <h2 className="text-[36px] leading-9 mb-3 mt-8">
+          Children&apos;s Data
+        </h2>
 
         <p className="text-gray-700 mb-4 text-sm">
           The Services are not intended to be used by children, and we do not
@@ -536,16 +542,17 @@ export default function PrivacyPolicy() {
           <li>
             <strong>
               Right to Opt out of Sale or Sharing or Targeted Advertising:
-            </strong>{" "}
-            You may have a right to direct us not to "sell" or "share" your
-            personal information or to opt out of the processing of your
-            personal information for purposes considered to be "targeted
-            advertising", as defined in applicable privacy laws. Please note
-            that if you visit our Site with the Global Privacy Control opt-out
-            preference signal enabled, depending on where you are, we will
-            automatically treat this as a request to opt-out of the "sale" or
-            "sharing" of information for the device and browser that you use to
-            visit the Site.
+            </strong>
+            You may have a right to direct us not to &quot;sell&quot; or
+            &quot;share&quot; your personal information or to opt out of the
+            processing of your personal information for purposes considered to
+            be &quot;targeted advertising&quot;, as defined in applicable
+            privacy laws. Please note that if you visit our Site with the Global
+            Privacy Control opt-out preference signal enabled, depending on
+            where you are, we will automatically treat this as a request to
+            opt-out of the &quot;sale&quot; or &quot;sharing&quot; of
+            information for the device and browser that you use to visit the
+            Site.
           </li>
           <li>
             <strong>Restriction of Processing:</strong> You may have the right
@@ -591,52 +598,83 @@ export default function PrivacyPolicy() {
       </section>
       {/* complaints */}
       <section className="mb-6">
-  <h2 className="text-[36px] leading-9 mb-3 mt-8">Complaints</h2>
+        <h2 className="text-[36px] leading-9 mb-3 mt-8">Complaints</h2>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    If you have complaints about how we process your personal information, please contact us using the contact details provided below. If you are not satisfied with our response to your complaint, depending on where you live you may have the right to appeal our decision by contacting us using the contact details set out below, or lodge your complaint with your local data protection authority.
-  </p>
+        <p className="text-gray-700 mb-4 text-sm">
+          If you have complaints about how we process your personal information,
+          please contact us using the contact details provided below. If you are
+          not satisfied with our response to your complaint, depending on where
+          you live you may have the right to appeal our decision by contacting
+          us using the contact details set out below, or lodge your complaint
+          with your local data protection authority.
+        </p>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    For the EEA, you can find a list of the responsible data protection supervisory authorities <a href="URL_TO_EEA_AUTHORITIES" className="text-blue-500">here</a>.
-  </p>
+        <p className="text-gray-700 mb-4 text-sm">
+          For the EEA, you can find a list of the responsible data protection
+          supervisory authorities{" "}
+          <a href="URL_TO_EEA_AUTHORITIES" className="text-blue-500">
+            here
+          </a>
+          .
+        </p>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    Please note that the actual URL for the EEA data protection authorities should be provided in place of <code>URL_TO_EEA_AUTHORITIES</code>. This link will direct users to the relevant information regarding their rights and the authorities responsible for overseeing data protection in their region.
-  </p>
-</section>
-{/* international  user */}
-<section className="mb-6">
-  <h2 className="text-[36px] leading-9 mb-3 mt-8">International Users</h2>
+        <p className="text-gray-700 mb-4 text-sm">
+          Please note that the actual URL for the EEA data protection
+          authorities should be provided in place of{" "}
+          <code>URL_TO_EEA_AUTHORITIES</code>. This link will direct users to
+          the relevant information regarding their rights and the authorities
+          responsible for overseeing data protection in their region.
+        </p>
+      </section>
+      {/* international  user */}
+      <section className="mb-6">
+        <h2 className="text-[36px] leading-9 mb-3 mt-8">International Users</h2>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    Please note that we may transfer, store, and process your personal information outside the country you live in. Your personal information is also processed by staff and third-party service providers and partners in these countries.
-  </p>
+        <p className="text-gray-700 mb-4 text-sm">
+          Please note that we may transfer, store, and process your personal
+          information outside the country you live in. Your personal information
+          is also processed by staff and third-party service providers and
+          partners in these countries.
+        </p>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    If we transfer your personal information out of Europe, we will rely on recognized transfer mechanisms like the European Commission's Standard Contractual Clauses, or any equivalent contracts issued by the relevant competent authority of the UK, as relevant, unless the data transfer is to a country that has been determined to provide an adequate level of protection.
-  </p>
-</section>
-{/* contact */}
-<section className="mb-6">
-  <h2 className="text-[36px] leading-9 mb-3 mt-8">Contact</h2>
+      <p className="text-gray-700 mb-4 text-sm">
+  If we transfer your personal information out of Europe, we will rely
+  on recognized transfer mechanisms like the European Commission&apos;s
+  Standard Contractual Clauses, or any equivalent contracts issued by
+  the relevant competent authority of the UK, as relevant, unless the
+  data transfer is to a country that has been determined to provide an
+  adequate level of protection.
+</p>
+      </section>
+      {/* contact */}
+      <section className="mb-6">
+        <h2 className="text-[36px] leading-9 mb-3 mt-8">Contact</h2>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please call or email us at <a href="mailto:krishbarwa@gmail.com" className="text-blue-500">krishbarwa@gmail.com</a> or contact us at:
-  </p>
+        <p className="text-gray-700 mb-4 text-sm">
+          Should you have any questions about our privacy practices or this
+          Privacy Policy, or if you would like to exercise any of the rights
+          available to you, please call or email us at{" "}
+          <a href="mailto:krishbarwa@gmail.com" className="text-blue-500">
+            krishbarwa@gmail.com
+          </a>{" "}
+          or contact us at:
+        </p>
 
-  <address className="text-gray-700 mb-4 text-sm">
-    Libra Fashion<br />
-    Velpur Road Venkatarayapuram, AB towers<br />
-    Tanuku, AP, 534211, IN
-  </address>
+        <address className="text-gray-700 mb-4 text-sm">
+          Libra Fashion
+          <br />
+          Velpur Road Venkatarayapuram, AB towers
+          <br />
+          Tanuku, AP, 534211, IN
+        </address>
 
-  <p className="text-gray-700 mb-4 text-sm">
-    For the purpose of applicable data protection laws and if not explicitly stated otherwise, we are the data controller of your personal information.
-  </p>
-</section>
-{/* footer */}
-
+        <p className="text-gray-700 mb-4 text-sm">
+          For the purpose of applicable data protection laws and if not
+          explicitly stated otherwise, we are the data controller of your
+          personal information.
+        </p>
+      </section>
+      {/* footer */}
 
       {/* Add more sections as needed */}
     </div>
