@@ -14,7 +14,7 @@ const ShopByCategory = () => {
       <div className="categoriesSwiper overflow-x-auto w-full scrollbar-hide">
         <div className="flex gap-[1px] min-w-max">
           {/* category-1 */}
-          <Link href="/category/all-products" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px] bg-[url('/images/fashionTee.png')] bg-cover bg-center">
+          <Link href="/category/all-products" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px] bg-[url('/images/over3.jpg')] bg-cover bg-center">
             <div className="numberButton font-ispire border-[1px] border-white inline-block px-3 py-1 font-normal text-3xl absolute top-[8px] left-[8px] text-white">
               01
             </div>
@@ -23,7 +23,7 @@ const ShopByCategory = () => {
             </div>
           </Link>
           {/* category-2 */}
-          <Link href="/category/hoodies" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px]  bg-[url('/images/accessories.png')] bg-cover bg-center">
+          <Link href="/category/hoodies" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px]  bg-[url('/images/fashionTee.png')] bg-cover bg-center">
             <div className="numberButton font-ispire border-[1px] border-white inline-block px-3 py-1 font-normal text-3xl absolute top-[8px] left-[8px] text-white">
               02
             </div>
@@ -50,7 +50,7 @@ const ShopByCategory = () => {
             </div>
           </Link>
           {/* Category-4 */}
-          <Link href="/category/all-products" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px]  bg-[url('/images/fashionTee.png')] bg-cover bg-center">
+          <Link href="/category/all-products" className="category relative bg-pink-100 w-[300px] lg:w-[500px]  h-[450px] lg:h-[700px]  bg-[url('/images/allProducts.jpg')] bg-cover bg-center">
             <div className="numberButton font-ispire border-[1px] border-white inline-block px-3 py-1 font-normal text-3xl absolute top-[8px] left-[8px] text-white">
               05
             </div>

@@ -150,13 +150,16 @@ export default function ProductPage({ params }: ProductPageProps) {
     }
   }, [product]);
 
-  if (loading) {
-    return (
-      <div className="pt-16 flex justify-center items-center h-96">
-        <div className="animate-pulse text-lg">Loading product...</div>
+ if (loading) {
+  return (
+    <div className="pt-16 flex justify-center items-center h-96">
+      <div className="flex flex-col items-center gap-3">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        <div className="text-sm text-gray-600">Loading product...</div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (!product) {
     notFound();

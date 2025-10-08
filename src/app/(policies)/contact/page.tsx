@@ -19,11 +19,16 @@ export default function Contact() {
           
           <div>
             <h3 className="font-semibold mb-2 font-inter tracking-tight">Phone</h3>
-            <Button variant="outline" asChild>
-              <a href="tel:+919166668224" className="w-full sm:w-auto">
-                +91 91 6666 8224
-              </a>
-            </Button>
+          <Button variant="outline" asChild>
+  <a 
+    href="https://wa.me/919166668224" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="w-full sm:w-auto"
+  >
+    +91 91 6666 8224
+  </a>
+</Button>
           </div>
 
           <div>
