@@ -64,9 +64,9 @@ const SizeSelector = ({
   };
 
   return (
-    <div className="flex items-center mt-5 px-[8px] w-full justify-between">
+    <div className="flex items-center mt-3 px-[8px] w-full justify-between">
       <div className="container flex items-center gap-3">
-        <div className="heading text-[12px] font-regular">Size</div>
+        <div className="heading text-[12px] mt-2 font-regular">Size</div>
         <div className="sizeContainer">
           {sizes.map((size) => {
             const isAvailable = availability[size] !== false;
@@ -76,7 +76,7 @@ const SizeSelector = ({
               <Button
                 variant={"outline"}
                 key={size}
-                className={`rounded-sm text-[10px] px-3 py-2 mr-3 transition-all ${
+                className={`rounded-sm text-[10px] px-3 py-2 mr-3 transition-all mt-2 ${
                   isSelected
                     ? "bg-black text-white"
                     : isAvailable

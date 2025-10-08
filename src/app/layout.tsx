@@ -250,7 +250,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </div>
 
         {/* Global UI components */}
-        <Toaster position="bottom-right" expand={true} richColors closeButton />
+        <Toaster position="top-right" expand={true}  closeButton />
 
         {/* TODO: Add CookieConsent component if GDPR compliance is needed */}
 

@@ -1,210 +1,6 @@
-// "use client";
 
-// import React from "react";
-// import { SimpleProduct, ProductVariant } from "@/types/shopify";
-// import { useCartStore } from "@/store/cartStore";
-// import { Button } from "../ui/button";
-// import { createCartCheckout } from "@/lib/shopify/checkout";
 
-// interface BuyNowProps {
-//   product: SimpleProduct;
-//   selectedVariant?: ProductVariant | null;
-// }
 
-// const BuyNow = ({ product, selectedVariant }: BuyNowProps) => {
-//   const { addToCart, isLoading, clearError } = useCartStore();
-//   const [checkoutLoading, setCheckoutLoading] = React.useState(false);
-
-//   const handleBuyNow = async () => {
-//     if (!selectedVariant) {
-//       alert("Please select size and color first");
-//       return;
-//     }
-
-//     if (!selectedVariant.availableForSale) {
-//       alert("This variant is currently out of stock");
-//       return;
-//     }
-
-//     try {
-//       setCheckoutLoading(true);
-//       clearError();
-
-//       const itemPrice = parseFloat(selectedVariant.price.amount);
-
-//       // Add to local cart
-//       await addToCart(selectedVariant, 1, product.title);
-
-//       const confirmed = confirm(
-//         `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${
-//           selectedVariant.title
-//         }\nPrice: ₹${itemPrice.toFixed(2)}\n\nUsing modern Cart API`
-//       );
-
-//       if (confirmed) {
-//         console.log(
-//           "Creating Cart API checkout for variant:",
-//           selectedVariant.id
-//         );
-
-//         // Use Cart API instead of deprecated checkout
-//         const cart = await createCartCheckout(selectedVariant.id, 1);
-
-//         console.log("Cart created with checkout URL:", cart.checkoutUrl);
-
-//         // Redirect to Shopify checkout
-//         window.location.href = cart.checkoutUrl;
-//       }
-//     } catch (error) {
-//       console.error("Cart API Buy now failed:", error);
-//       alert(
-//         `Checkout failed: ${
-//           error.message || error
-//         }\n\nCheck console for details.`
-//       );
-//     } finally {
-//       setCheckoutLoading(false);
-//     }
-//   };
-
-//   const isOutOfStock =
-//     !product.availableForSale ||
-//     (selectedVariant && !selectedVariant.availableForSale);
-//   const needsSelection =
-//     !selectedVariant && (product.variants?.length || 0) > 1;
-
-//   return (
-//     <div className="pt-3 px-[8px]">
-//       <Button
-//         className="rounded-none w-full"
-//         onClick={handleBuyNow}
-//         disabled={
-//           isOutOfStock || needsSelection || isLoading || checkoutLoading
-//         }
-//       >
-//         {checkoutLoading
-//           ? "Creating Cart..."
-//           : isLoading
-//           ? "Adding to Cart..."
-//           : isOutOfStock
-//           ? "Out of Stock"
-//           : needsSelection
-//           ? "Select Options"
-//           : "Buy Now"}
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default BuyNow;
-
-// "use client";
-
-// import React from "react";
-// import { SimpleProduct, ProductVariant } from "@/types/shopify";
-// import { useCartStore } from "@/store/cartStore";
-// import { Button } from "../ui/button";
-// import { createCartCheckout } from "@/lib/shopify/checkout";
-
-// interface BuyNowProps {
-//   product: SimpleProduct;
-//   selectedVariant?: ProductVariant | null;
-//   quantity: number; // Add quantity prop
-// }
-
-// const BuyNow = ({ product, selectedVariant, quantity }: BuyNowProps) => {
-//   const { addToCart, isLoading, clearError } = useCartStore();
-//   const [checkoutLoading, setCheckoutLoading] = React.useState(false);
-
-//   const handleBuyNow = async () => {
-//     if (!selectedVariant) {
-//       alert("Please select size and color first");
-//       return;
-//     }
-
-//     if (!selectedVariant.availableForSale) {
-//       alert("This variant is currently out of stock");
-//       return;
-//     }
-
-//     try {
-//       setCheckoutLoading(true);
-//       clearError();
-
-//       console.log("About to call createCartCheckout with quantity:", quantity);
-
-//       // Use a local variable to be absolutely sure
-//       const quantityToSend = Number(quantity);
-//       console.log("Quantity after Number conversion:", quantityToSend);
-
-//       const itemPrice = parseFloat(selectedVariant.price.amount);
-//       const totalPrice = itemPrice * quantity;
-
-//       // Add to local cart with selected quantity
-//       await addToCart(selectedVariant, quantity, product.title);
-
-//       const confirmed = confirm(
-//         `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${
-//           selectedVariant.title
-//         }\nQuantity: ${quantity}\nTotal: ₹${totalPrice.toFixed(2)}`
-//       );
-
-//       if (confirmed) {
-//         console.log(
-//           `Creating Cart checkout for ${quantity}x variant:`,
-//           selectedVariant.id
-//         );
-
-//         // Use Cart API with selected quantity
-//         const cart = await createCartCheckout(selectedVariant.id, quantity);
-
-//         console.log("Cart created with checkout URL:", cart.checkoutUrl);
-
-//         // Redirect to Shopify checkout
-//         window.location.href = cart.checkoutUrl;
-//       }
-//     } catch (error) {
-//       console.error("Cart API Buy now failed:", error);
-//       alert(
-//         `Checkout failed: ${
-//           error.message || error
-//         }\n\nCheck console for details.`
-//       );
-//     } finally {
-//       setCheckoutLoading(false);
-//     }
-//   };
-
-//   const isOutOfStock =
-//     !product.availableForSale ||
-//     (selectedVariant && !selectedVariant.availableForSale);
-//   const needsSelection =
-//     !selectedVariant && (product.variants?.length || 0) > 1;
-
-//   return (
-//     <div className="pt-3 px-[8px]">
-//       <Button
-//         className="rounded-none w-full"
-//         onClick={handleBuyNow}
-//         disabled={
-//           isOutOfStock || needsSelection || isLoading || checkoutLoading
-//         }
-//       >
-//         {checkoutLoading
-//           ? "Creating Cart..."
-//           : isLoading
-//           ? "Adding to Cart..."
-//           : isOutOfStock
-//           ? "Out of Stock"
-//           : needsSelection
-//           ? "Select Options"
-//           : `Buy Now (${quantity})`}
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default BuyNow;
 "use client";
 
 import React from "react";
@@ -212,30 +8,41 @@ import { SimpleProduct, ProductVariant } from "@/types/shopify";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "../ui/button";
 import { createCartCheckout } from "@/lib/shopify/checkout";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface BuyNowProps {
   product: SimpleProduct;
   selectedVariant?: ProductVariant | null;
-  quantity: number; // Add quantity prop
+  quantity: number;
 }
 
 const BuyNow = ({ product, selectedVariant, quantity }: BuyNowProps) => {
   const { addToCart, isLoading, clearError } = useCartStore();
   const [checkoutLoading, setCheckoutLoading] = React.useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
 
   const handleBuyNow = async () => {
     if (!selectedVariant) {
-      alert("Please select size and color first");
+      toast.error("Please select size and color first");
       return;
     }
 
     if (!selectedVariant.availableForSale) {
-      alert("This variant is currently out of stock");
+      toast.error("This variant is currently out of stock");
       return;
     }
 
     try {
-      setCheckoutLoading(true);
       clearError();
 
       const itemPrice = parseFloat(selectedVariant.price.amount);
@@ -244,32 +51,37 @@ const BuyNow = ({ product, selectedVariant, quantity }: BuyNowProps) => {
       // Add to local cart with selected quantity
       await addToCart(selectedVariant, quantity, product.title, product.id);
 
-      const confirmed = confirm(
-        `Proceed to Shopify checkout?\n\nItem: ${product.title}\nVariant: ${
-          selectedVariant.title
-        }\nQuantity: ${quantity}\nTotal: ₹${totalPrice.toFixed(2)}`
+      // Show confirmation dialog
+      setShowConfirmDialog(true);
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      toast.error("Failed to add item to cart");
+    }
+  };
+
+  const proceedToCheckout = async () => {
+    if (!selectedVariant) return;
+
+    try {
+      setCheckoutLoading(true);
+      setShowConfirmDialog(false);
+
+      console.log(
+        `Creating Cart checkout for ${quantity}x variant:`,
+        selectedVariant.id
       );
 
-      if (confirmed) {
-        console.log(
-          `Creating Cart checkout for ${quantity}x variant:`,
-          selectedVariant.id
-        );
+      const cart = await createCartCheckout(selectedVariant.id, quantity);
 
-        // Use Cart API with selected quantity
-        const cart = await createCartCheckout(selectedVariant.id, quantity);
+      console.log("Cart created with checkout URL:", cart.checkoutUrl);
 
-        console.log("Cart created with checkout URL:", cart.checkoutUrl);
-
-        // Redirect to Shopify checkout
-        window.location.href = cart.checkoutUrl;
-      }
+      // Redirect to Shopify checkout
+      window.location.href = cart.checkoutUrl;
     } catch (error) {
       console.error("Cart API Buy now failed:", error);
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      alert(`Checkout failed: ${errorMessage}\n\nCheck console for details.`);
-    } finally {
+      toast.error(`Checkout failed: ${errorMessage}`);
       setCheckoutLoading(false);
     }
   };
@@ -280,26 +92,64 @@ const BuyNow = ({ product, selectedVariant, quantity }: BuyNowProps) => {
   const needsSelection =
     !selectedVariant && (product.variants?.length || 0) > 1;
 
+  const itemPrice = selectedVariant
+    ? parseFloat(selectedVariant.price.amount)
+    : 0;
+  const totalPrice = itemPrice * quantity;
+
   return (
-    <div className="pt-3 px-[8px]">
-      <Button
-        className="rounded-none w-full"
-        onClick={handleBuyNow}
-        disabled={
-          isOutOfStock || needsSelection || isLoading || checkoutLoading
-        }
-      >
-        {checkoutLoading
-          ? "Creating Cart..."
-          : isLoading
-          ? "Adding to Cart..."
-          : isOutOfStock
-          ? "Out of Stock"
-          : needsSelection
-          ? "Select Options"
-          : `Buy Now (${quantity})`}
-      </Button>
-    </div>
+    <>
+      <div className="pt-3 px-[8px]">
+        <Button
+          className="rounded-none w-full"
+          onClick={handleBuyNow}
+          disabled={
+            isOutOfStock || needsSelection || isLoading || checkoutLoading
+          }
+        >
+          {checkoutLoading
+            ? "Creating Cart..."
+            : isLoading
+            ? "Adding to Cart..."
+            : isOutOfStock
+            ? "Out of Stock"
+            : needsSelection
+            ? "Select Options"
+            : `Buy Now (${quantity})`}
+        </Button>
+      </div>
+
+      <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-inter tracking-tight">Proceed to Checkout?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <div className="pt-1 space-y-1">
+                <p>
+                  <span className="font-medium text-black">Item:</span> <span className="capitalize">{product.title}</span> 
+                </p>
+                <p>
+                  <span className="font-medium text-black">Variant:</span>{" "}
+                  {selectedVariant?.title}
+                </p>
+                <p>
+                  <span className="font-medium text-black">Quantity:</span> {quantity}
+                </p>
+                <p className="text-md text-black font-semibold pt-2">
+                  Total: ₹{totalPrice.toFixed(2)}
+                </p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={proceedToCheckout}>
+              Continue to Checkout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 

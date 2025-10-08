@@ -174,7 +174,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             <ProductInfo product={product} selectedVariant={selectedVariant} />
             
             {/* Mobile selectors and actions */}
-            <div className="lg:hidden space-y-4">
+            <div className="lg:hidden ">
               <SizeSelector
                 product={product}
                 selectedSize={selectedSize}
