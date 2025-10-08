@@ -19,7 +19,7 @@ const ShopByCategory = () => {
               01
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-              <div className="shopText font-ispire font-normal text-3xl text-white">Tees</div>
+              <div className="shopText font-ispire font-normal text-3xl text-white">Oversized Tees</div>
             </div>
           </Link>
           {/* category-2 */}
@@ -28,7 +28,7 @@ const ShopByCategory = () => {
               02
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-              <div className="shopText font-ispire font-normal text-3xl text-white">Hoodies</div>
+              <div className="shopText font-ispire font-normal text-3xl text-white">Fitted Tees</div>
             </div>
           </Link>
           {/* category-3 */}
@@ -37,7 +37,7 @@ const ShopByCategory = () => {
               03
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-              <div className="shopText font-ispire font-normal text-3xl text-white">Bottoms</div>
+              <div className="shopText font-ispire font-normal text-3xl text-white">Baby Tees</div>
             </div>
           </Link>
           {/* Category-4 */}
@@ -46,7 +46,7 @@ const ShopByCategory = () => {
               04
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-              <div className="shopText font-ispire font-normal text-3xl text-white">New In</div>
+              <div className="shopText font-ispire font-normal text-3xl text-white">Hoodies</div>
             </div>
           </Link>
           {/* Category-4 */}
