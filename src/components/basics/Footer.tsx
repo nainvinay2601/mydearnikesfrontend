@@ -70,8 +70,15 @@ const Footer = () => {
         <div>©{new Date().getFullYear()} MYDEARNIKES</div>
 
         <div className="socials flex items-center justify-between gap-2">
-          <div className="instagram">
-            <Instagram size={16} />
+       <div className="instagram">
+            <a 
+              href="https://instagram.com/shop.mydearnikes" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center justify-center"
+            >
+              <Instagram size={16} />
+            </a>
           </div>
           <div>
             <button
