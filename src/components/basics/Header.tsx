@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -6,13 +5,12 @@ import { Button } from "../ui/button";
 import SearchComponent from "../Homepage/Navbar/SearchComponent/SearchComp";
 import TeesComponent from "../Homepage/Navbar/NavSections/teesSection/teesSection";
 import NewInComponent from "../Homepage/Navbar/NavSections/newinSection/newInSection";
-import BottomComponent from "../Homepage/Navbar/NavSections/bottomSection/bottomSection";
 import HelpBar from "../Homepage/Navbar/NavSections/helpBar/HelpBar";
 
 import { useCartStore } from "@/store/cartStore";
 import CartDrawer from "../cart/SlideOutDrawer";
 
-type ActiveState = null | "tees" | "bottoms" | "all" | "newin" | "search";
+type ActiveState = null | "tees" | "hoodies" | "all" | "newin" | "search";
 
 const Header = () => {
   const router = useRouter();
@@ -32,12 +30,14 @@ const Header = () => {
     } else if (key === "newin") {
       setActive(null);
       router.push("/category/new-arrivals");
+    } else if (key === "hoodies") {
+      setActive(null);
+      router.push("/category/hoodies");
     } else if (key === "search") {
       setActive("search");
     } else {
       const validKeys: ActiveState[] = [
         "tees",
-        "bottoms",
         "all",
         "newin",
         "search",
@@ -95,14 +95,10 @@ const Header = () => {
           <div className="absolute top-full left-0 right-0">
             <nav className="bg-white flex items-center overflow-x-auto gap-2 scrollbar-hide px-[8px] py-[16px] border-b-[0.5px] border-[#aeadad]">
               {[
-                { key: "all", label: "All Products", href: "/category/all" },
-                {
-                  key: "newin",
-                  label: "New In",
-                  href: "/category/new-arrivals",
-                },
+                { key: "all", label: "All Products" },
+                { key: "newin", label: "New In" },
                 { key: "tees", label: "Tees" },
-                { key: "bottoms", label: "Bottoms" },
+                { key: "hoodies", label: "Hoodies" },
                 { key: "search", label: "Search" },
               ].map(({ key, label }) => (
                 <Button
@@ -122,11 +118,10 @@ const Header = () => {
             {/* Section bodies */}
             {active === "tees" && <TeesComponent onClose={closeMenu} />}
             {active === "newin" && <NewInComponent />}
-            {active === "bottoms" && <BottomComponent onClose={closeMenu} />}
             {active === "search" && <SearchComponent onClose={closeMenu} />}
 
             {/* Help Bar */}
-            <HelpBar />
+            <HelpBar onClose={closeMenu} />
           </div>
         )}
       </header>

@@ -51,7 +51,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         ))}
 
       </div>
-      <div className="description text-[12px]  px-[8px]  py-1 hidden lg:block">
+      <div className="description text-[12px]   px-[8px]  py-1 hidden lg:block">
        {product.description}
 
       </div>
