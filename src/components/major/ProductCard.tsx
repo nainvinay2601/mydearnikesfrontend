@@ -110,8 +110,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </div>
-      <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm">
-        <h3 className="font-inter text-xs font-normal truncate uppercase">{product.title}</h3>
+      <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center gap-6 text-sm">
+        <h3 className="font-inter text-xs  font-normal truncate uppercase">{product.title}</h3>
         <p className="font-inter text-xs font-normal tracking-tight">
           {displayPrice}
         </p>

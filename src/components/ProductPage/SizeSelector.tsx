@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { RulerDimensionLine, X } from "lucide-react";
+import {  X } from "lucide-react";
 import { SimpleProduct, ProductVariant } from "@/types/shopify";
 import { getSizeChartByProductType } from "@/lib/sizeCharts";
 import Image from "next/image";
@@ -126,7 +126,7 @@ const SizeSelector = ({
 
           {/* Modal Container */}
           <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center pointer-events-none p-0 md:p-4">
-            <div className="bg-white rounded-t-3xl md:rounded-lg w-full md:max-w-6xl max-h-[95vh] md:max-h-[90vh] flex flex-col pointer-events-auto shadow-2xl">
+            <div className="bg-white rounded-t-3xl md:rounded-lg w-full md:max-w-6xl max-h-[95vh] md:min-h-[95vh] flex flex-col pointer-events-auto shadow-2xl">
               {/* Modal Header - FIXED at top */}
               <div className="flex justify-between items-center border-b border-gray-200 p-4 md:p-6 flex-shrink-0">
                 <h2 className="text-lg md:text-3xl font-bold text-gray-900">
@@ -142,19 +142,19 @@ const SizeSelector = ({
               </div>
 
               {/* Modal Content - SCROLLABLE area */}
-              <div className="overflow-y-auto flex-1 p-4 md:p-6">
+              <div className="overflow-y-auto flex-1 p-4 md:p-6 md:h-full ">
                 {/* Mobile: Single column, Tablet & Desktop: 2 columns */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[70vh] ">
                   {/* LEFT COLUMN - Size Chart Image */}
-                  <div className="flex flex-col space-y-4">
-                    <div className="relative w-full bg-red-100 rounded-lg">
+                  <div className="flex flex-col space-y-4 md:h-[70vh] ">
+                    <div className="relative w-full   md:h-full  rounded-lg">
                       {/* Mobile: Full screen width, large height */}
-                      <div className="relative w-full min-h-[400px] md:min-h-[500px] md:aspect-auto object-cover">
+                      <div className="relative w-full min-h-[450px] md:h-full md:min-h-[550px] ">
                         <Image
                           src={sizeChart.image}
                           alt={sizeChart.title}
                           fill
-                          className="object-cover"
+                          className="object-cover "
                           sizes="(max-width: 768px) 100vw, 50vw"
                           priority
                           quality={100}
@@ -164,7 +164,7 @@ const SizeSelector = ({
                   </div>
 
                   {/* RIGHT COLUMN - Info sections */}
-                  <div className="flex flex-col justify-between ">
+                  <div className="flex flex-col   gap-5 ">
                     {/* Current Product Sizes */}
                     <div className="w-full bg-gray-50 rounded-lg p-4 md:p-6">
                       <h3 className="text-base  font-semibold mb-3 font-inter tracking-tight">

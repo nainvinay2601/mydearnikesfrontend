@@ -406,6 +406,7 @@ import {
   convertRecentToSimpleProduct 
 } from "@/lib/shopify/recentlyViewed";
 import RecentlyViewedCarousel from "@/components/ProductPage/RecentlyViewedCarousel";
+import PaymentMethods from "@/components/ProductPage/PaymentMethods";
 
 interface ProductPageProps {
   params: Promise<{
@@ -716,7 +717,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               quantity={quantity}
             />
           </div>
-
+          <PaymentMethods/>
           <ProductAccordion product={product} />
         </div>
 

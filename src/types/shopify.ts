@@ -193,3 +193,271 @@ export interface SearchProductsVariables {
   query: string;
   first?: number;
 }
+
+// * shopify customer part comes here 
+
+// Customer Types
+// export interface ShopifyCustomer {
+//   id: string;
+//   email: string;
+//   firstName: string | null;
+//   lastName: string | null;
+//   phone: string | null;
+//   displayName: string;
+//   defaultAddress?: ShopifyAddress;
+//   addresses: {
+//     edges: Array<{
+//       node: ShopifyAddress;
+//     }>;
+//   };
+//   orders: {
+//     edges: Array<{
+//       node: ShopifyOrder;
+//     }>;
+//   };
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+// export interface ShopifyAddress {
+//   id: string;
+//   firstName: string | null;
+//   lastName: string | null;
+//   company: string | null;
+//   address1: string | null;
+//   address2: string | null;
+//   city: string | null;
+//   province: string | null;
+//   country: string | null;
+//   zip: string | null;
+//   phone: string | null;
+// }
+
+// // export interface ShopifyOrder {
+// //   id: string;
+// //   orderNumber: number;
+// //   processedAt: string;
+// //   financialStatus: string;
+// //   fulfillmentStatus: string;
+// //   totalPrice: ShopifyMoney;
+// //   lineItems: {
+// //     edges: Array<{
+// //       node: {
+// //         title: string;
+// //         quantity: number;
+// //         variant: {
+// //           image: ShopifyImage;
+// //           price: ShopifyMoney;
+// //         };
+// //       };
+// //     }>;
+// //   };
+// // }
+
+
+// export interface ShopifyOrder {
+//   id: string;
+//   orderNumber: number;
+//   processedAt: string;
+//   canceledAt: string | null; // Make sure this exists
+//   cancelReason?: string | null; // Add if missing
+//   financialStatus: string;
+//   fulfillmentStatus: string;
+//   totalPrice: ShopifyMoney;
+//   lineItems: {
+//     edges: Array<{
+//       node: {
+//         id: string; // Add this for key prop
+//         title: string;
+//         quantity: number;
+//         variant: {
+//           id: string; // Add this
+//           image?: ShopifyImage; // Make optional
+//           price: ShopifyMoney;
+//         };
+//       };
+//     }>;
+//   };
+// }
+
+// export interface CustomerAccessToken {
+//   accessToken: string;
+//   expiresAt: string;
+// }
+
+// // API Response Types
+// export interface CustomerCreateResponse {
+//   customerCreate: {
+//     customer: ShopifyCustomer | null;
+//     customerUserErrors: Array<{
+//       field: string[] | null;
+//       message: string;
+//     }>;
+//   };
+// }
+
+// export interface CustomerAccessTokenCreateResponse {
+//   customerAccessTokenCreate: {
+//     customerAccessToken: CustomerAccessToken | null;
+//     customerUserErrors: Array<{
+//       field: string[] | null;
+//       message: string;
+//     }>;
+//   };
+// }
+
+// export interface CustomerResponse {
+//   customer: ShopifyCustomer | null;
+// }
+
+// export interface CustomerAccessTokenRenewResponse {
+//   customerAccessTokenRenew: {
+//     customerAccessToken: CustomerAccessToken | null;
+//     userErrors: Array<{
+//       field: string[] | null;
+//       message: string;
+//     }>;
+//   };
+// }
+
+
+
+// //! order cancel 
+// export interface OrderCancelResponse {
+//   orderCancel: {
+//     order: {
+//       id: string;
+//       canceledAt: string | null;
+//       cancelReason: string | null;
+//       financialStatus: string;
+//       fulfillmentStatus: string;
+//     };
+//     userErrors: Array<{
+//       field: string[];
+//       message: string;
+//     }>;
+//   };
+// }
+
+export interface ShopifyCustomer {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+  displayName: string;
+  defaultAddress?: ShopifyAddress;
+  addresses: {
+    edges: Array<{
+      node: ShopifyAddress;
+    }>;
+  };
+  orders: {
+    edges: Array<{
+      node: ShopifyOrder;
+    }>;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ShopifyAddress {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  company: string | null;
+  address1: string | null;
+  address2: string | null;
+  city: string | null;
+  province: string | null;
+  country: string | null;
+  zip: string | null;
+  phone: string | null;
+}
+
+// export interface ShopifyOrder {
+//   id: string;
+//   orderNumber: number;
+//   processedAt: string;
+//   financialStatus: string;
+//   fulfillmentStatus: string;
+//   totalPrice: ShopifyMoney;
+//   lineItems: {
+//     edges: Array<{
+//       node: {
+//         title: string;
+//         quantity: number;
+//         variant: {
+//           image: ShopifyImage;
+//           price: ShopifyMoney;
+//         };
+//       };
+//     }>;
+//   };
+// }
+
+export interface ShopifyOrder {
+  id: string;
+  orderNumber: number;
+  processedAt: string;
+  cancelledAt?: string | null;
+  canceledAt?: string | null;
+  cancelReason?: string | null;
+  closed?: boolean;
+  financialStatus: string;
+  fulfillmentStatus: string;
+  totalPrice: ShopifyMoney;
+  lineItems: {
+    edges: Array<{
+      node: {
+        id?: string; // Make this optional since Storefront API doesn't have it
+        title: string;
+        quantity: number;
+        variant: {
+          id: string;
+          image?: ShopifyImage;
+          price: ShopifyMoney;
+        };
+      };
+    }>;
+  };
+}
+export interface CustomerAccessToken {
+  accessToken: string;
+  expiresAt: string;
+}
+
+// API Response Types
+export interface CustomerCreateResponse {
+  customerCreate: {
+    customer: ShopifyCustomer | null;
+    customerUserErrors: Array<{
+      field: string[] | null;
+      message: string;
+    }>;
+  };
+}
+
+export interface CustomerAccessTokenCreateResponse {
+  customerAccessTokenCreate: {
+    customerAccessToken: CustomerAccessToken | null;
+    customerUserErrors: Array<{
+      field: string[] | null;
+      message: string;
+    }>;
+  };
+}
+
+export interface CustomerResponse {
+  customer: ShopifyCustomer | null;
+}
+
+export interface CustomerAccessTokenRenewResponse {
+  customerAccessTokenRenew: {
+    customerAccessToken: CustomerAccessToken | null;
+    userErrors: Array<{
+      field: string[] | null;
+      message: string;
+    }>;
+  };
+}

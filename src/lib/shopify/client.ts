@@ -773,3 +773,23 @@ export async function searchProducts(query: string, first: number = 10): Promise
     throw new Error("Failed to search products");
   }
 }
+
+
+//! order cancel mutation 
+export const CANCEL_ORDER_MUTATION = `
+  mutation CancelOrder($orderId: ID!, $reason: String) {
+    orderCancel(id: $orderId, reason: $reason) {
+      order {
+        id
+        canceledAt
+        cancelReason
+        financialStatus
+        fulfillmentStatus
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;

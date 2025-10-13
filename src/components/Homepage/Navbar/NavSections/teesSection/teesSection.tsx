@@ -10,7 +10,6 @@ const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
     { name: "Oversized Tees", href: "/category/oversized-unisex-tees" },
     { name: "Fitted Tees", href: "/category/regular-fits" },
     { name: "Baby Tees", href: "/category/baby-tees" },
-    { name: "Hoodies", href: "/category/hoodies" },
   ];
 
   return (
@@ -20,7 +19,6 @@ const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
           key={index}
           href={category.href}
           className={`text-xl font-semibold tracking-tight transition-colors hover:text-gray-600 hover:underline hover:underline-offset-4`}
-        
           onClick={onClose}
         >
           {category.name}
