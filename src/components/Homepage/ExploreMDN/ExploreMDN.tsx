@@ -1,4 +1,3 @@
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,18 +6,31 @@ import React, { useState, useEffect, useCallback } from "react";
 import { SimpleProduct } from "@/types/shopify";
 import { getBestSellingProducts } from "@/lib/shopify/client";
 
+// Skeleton loader component
+const ProductSkeleton = () => (
+  <div className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col animate-pulse">
+    <div className="relative aspect-square bg-gray-100 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 animate-shimmer"></div>
+    </div>
+    <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm gap-6">
+      <div className="h-4 bg-gray-200 rounded-md w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded-md w-1/4 flex-shrink-0"></div>
+    </div>
+  </div>
+);
+
 const ExploreMDN = () => {
   const [products, setProducts] = useState<SimpleProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [visibleItems, setVisibleItems] = useState(8); // Start with 6 items
+  const [visibleItems, setVisibleItems] = useState(8);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchBestSellingProducts = async () => {
       try {
         setLoading(true);
-        const bestSellingProducts = await getBestSellingProducts(20); // Only fetch 18 products
+        const bestSellingProducts = await getBestSellingProducts(20);
         setProducts(bestSellingProducts);
       } catch (err) {
         setError('Failed to fetch best-selling products');
@@ -31,20 +43,17 @@ const ExploreMDN = () => {
     fetchBestSellingProducts();
   }, []);
 
-  // 🔥 Auto-load more products when scrolling near bottom
   const loadMore = useCallback(() => {
-    if (isLoadingMore || visibleItems >= 20) return; // Max 20 items
+    if (isLoadingMore || visibleItems >= 20) return;
     
     setIsLoadingMore(true);
     
-    // Simulate loading delay (remove if not needed)
     setTimeout(() => {
-      setVisibleItems((prev) => Math.min(prev + 4, 20)); // Load 6 more, max 20 
+      setVisibleItems((prev) => Math.min(prev + 4, 20));
       setIsLoadingMore(false);
     }, 500);
   }, [isLoadingMore, visibleItems]);
 
-  // 🔥 Intersection Observer to auto-load only when section is visible
   useEffect(() => {
     if (visibleItems >= 20 || products.length === 0) return;
 
@@ -58,12 +67,11 @@ const ExploreMDN = () => {
       },
       {
         root: null,
-        rootMargin: '300px', // Start loading 300px before bottom
+        rootMargin: '300px',
         threshold: 0.1
       }
     );
 
-    // Observe the loading trigger element
     const loadTrigger = document.getElementById('bestsellers-load-trigger');
     if (loadTrigger) {
       observer.observe(loadTrigger);
@@ -77,28 +85,22 @@ const ExploreMDN = () => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: price.currencyCode,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const visibleProducts = products.slice(0, visibleItems);
-  const hasMore = visibleItems < 20 && products.length >= 20; // Check against 18 limit
-  const showExploreButton = visibleItems >= 20; // Show explore button when all 18 are visible
+  const hasMore = visibleItems < 20 && products.length >= 20;
+  const showExploreButton = visibleItems >= 20;
 
   if (loading) {
     return (
       <div className="px-[8px] py-4">
         <h1 className="uppercase text-2xl font-medium mb-4">Bestsellers</h1>
-        <div className="grid grid-cols-2 md:grid-cols-3 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="border-b-[0.25px] border-r-[0.25px] border-gray-400 flex flex-col">
-              <div className="flex-1 bg-gray-100 flex justify-center items-center p-2 animate-pulse">
-                <div className="w-full h-64 bg-gray-300"></div>
-              </div>
-              <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm">
-                <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-300 rounded w-1/4"></div>
-              </div>
-            </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad]">
+          {[...Array(8)].map((_, i) => (
+            <ProductSkeleton key={`skeleton-${i}`} />
           ))}
         </div>
       </div>
@@ -117,10 +119,10 @@ const ExploreMDN = () => {
   return (
     <>
       <div className="heading px-[8px] py-4 lg:py-8">
-        <h1 className="uppercase text-2xl lg:text-4xl  font-medium">Bestsellers</h1>
+        <h1 className="uppercase text-2xl lg:text-4xl font-medium">Bestsellers</h1>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad] auto-rows-fr">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-gray-100 border-[0.25px] border-b-[0.125px] border-[#aeadad]">
         {visibleProducts.map((product, index) => (
           <Link 
             key={product.id} 
@@ -137,7 +139,7 @@ const ExploreMDN = () => {
                   sizes="(max-width: 768px) 50vw, 33vw"
                   quality={90}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  priority={index < 6}
+                  priority={index < 8}
                 />
               ) : (
                 <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
@@ -145,8 +147,8 @@ const ExploreMDN = () => {
                 </div>
               )}
             </div>
-            <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm group-hover:bg-gray-50 transition-colors duration-200">
-              <h3 className="font-inter text-xs font-normal group-hover:text-gray-700 transition-colors duration-200 truncate ">
+            <div className="px-2 bg-white py-1 flex border-t-[0.5px] border-gray-200 justify-between items-center text-sm group-hover:bg-gray-50 transition-colors duration-200 gap-6">
+              <h3 className="font-inter text-xs font-normal group-hover:text-gray-700 transition-colors duration-200 truncate uppercase">
                 {product.title}
               </h3>
               <p className="font-inter text-xs font-normal tracking-tight group-hover:text-gray-700 transition-colors duration-200">
@@ -157,7 +159,6 @@ const ExploreMDN = () => {
         ))}
       </div>
 
-      {/* Loading trigger - always present when more items can be loaded */}
       {visibleItems < 20 && products.length > visibleItems && (
         <div 
           id="bestsellers-load-trigger" 
@@ -166,7 +167,6 @@ const ExploreMDN = () => {
           {isLoadingMore ? (
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
-              {/* <span className="text-sm text-gray-600"></span> */}
             </div>
           ) : (
             <div className="text-sm text-gray-400">Scroll to load more...</div>
@@ -174,7 +174,6 @@ const ExploreMDN = () => {
         </div>
       )}
 
-      {/*  Explore More button when all 18 items are shown */}
       {showExploreButton && (
         <div className="flex justify-center py-8">
           <Link
@@ -185,10 +184,22 @@ const ExploreMDN = () => {
           </Link>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
     </>
   );
 };
 
 export default ExploreMDN;
-
-
