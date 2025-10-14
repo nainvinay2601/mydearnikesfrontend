@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface TeesComponentProps {
   onClose: () => void;
@@ -15,14 +17,24 @@ const TeesComponent: React.FC<TeesComponentProps> = ({ onClose }) => {
   return (
     <nav className="flex flex-col px-[8px] py-3 gap-2 border-b-[0.5px] border-[#aeadad] bg-white">
       {teeCategories.map((category, index) => (
-        <Link
+        <motion.div
           key={index}
-          href={category.href}
-          className={`text-xl font-semibold tracking-tight transition-colors hover:text-gray-600 hover:underline hover:underline-offset-4`}
-          onClick={onClose}
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ 
+            duration: 0.4, 
+            delay: index * 0.15,
+            ease: "easeOut"
+          }}
         >
-          {category.name}
-        </Link>
+          <Link
+            href={category.href}
+            className="text-xl font-semibold tracking-tight transition-colors hover:text-gray-600 hover:underline hover:underline-offset-4 block"
+            onClick={onClose}
+          >
+            {category.name}
+          </Link>
+        </motion.div>
       ))}
     </nav>
   );

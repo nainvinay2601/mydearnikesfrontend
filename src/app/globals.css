@@ -140,10 +140,13 @@
   font-family: var(--font-ispire);
 }
 
+html{
+  scroll-behavior: smooth;
+}
 /* Or set defaults */
 body {
   font-family: var(--font-inter);
-  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 h1,
@@ -174,6 +177,3 @@ h6 {
   
 }
 
-html{
-  scroll-behavior: smooth;
-}
