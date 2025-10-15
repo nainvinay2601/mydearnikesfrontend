@@ -28,12 +28,12 @@ const ShopByCategory = () => {
     },
     {
       href: "/category/hoodies",
-      image: "/images/fitted.webp",
+      image: "/images/hoodieCover.webp",
       title: "Hoodies"
     },
     {
       href: "/category/all-products",
-      image: "/images/allCover.png",
+      image: "/images/allCover.webp",
       title: "All Products"
     }
   ];
