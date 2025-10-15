@@ -13,27 +13,27 @@ const ShopByCategory = () => {
   const categories = [
     {
       href: "/category/oversized-unisex-tees",
-      image: "/images/overX3.png",
+      image: "/images/over.webp",
       title: "Oversized Tees"
     },
     {
       href: "/category/regular-fits",
-      image: "/images/fashionTee.png",
+      image: "/images/fitted.webp",
       title: "Fitted Tees"
     },
     {
       href: "/category/baby-tees",
-      image: "/images/newIn.png",
+      image: "/images/babyTeeco.webp",
       title: "Baby Tees"
     },
     {
       href: "/category/hoodies",
-      image: "/images/fashionTee.png",
+      image: "/images/fitted.webp",
       title: "Hoodies"
     },
     {
       href: "/category/all-products",
-      image: "/images/allProducts.jpg",
+      image: "/images/allCover.png",
       title: "All Products"
     }
   ];

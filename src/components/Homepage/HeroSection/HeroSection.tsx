@@ -29,7 +29,7 @@ const HeroSection = () => {
   const heroSlides: HeroSlide[] = [
     {
       id: 1,
-      bgImage: "/images/bigBg.jpg",
+      bgImage: "/images/bigBg.webp",
       productImage: "/images/mock.webp",
       productName: "Meant Nothing?",
       productPrice: "₹1,299",
@@ -37,7 +37,7 @@ const HeroSection = () => {
     },
     {
       id: 2,
-      bgImage: "/images/heroNew.jpg",
+      bgImage: "/images/heroNew.webp",
       productImage: "/images/HRU.webp",
       productName: "How Are You Feeling Today",
       productPrice: "₹1,299",
@@ -46,7 +46,7 @@ const HeroSection = () => {
     },
     {
       id: 3,
-      bgImage: "/images/pinkBlunt.jpg",
+      bgImage: "/images/pinkBlunt.webp",
       productImage: "/images/soMany.webp",
       productName: "so many bad bitches",
       productPrice: "₹699",
@@ -57,15 +57,15 @@ const HeroSection = () => {
   const mobileHeroSlides: MobileHeroSlide[] = [
     {
       id: 1,
-      bgImage: "/images/bigBg.jpg",
+      bgImage: "/images/bigBg.webp",
     },
     {
       id: 2,
-      bgImage: "/images/heroImageNonBlur.jpg",
+      bgImage: "/images/heroImage.webp",
     },
     {
       id: 3,
-      bgImage: "/images/heroNew.jpg",
+      bgImage: "/images/heroNew.webp",
     },
   ];
 
